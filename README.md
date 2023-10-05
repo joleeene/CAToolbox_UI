@@ -4,6 +4,18 @@ For CA 2023 only.
 This script is intended to solve annoying Maya problems. The reason why not a plugin is because admin is needed to install a plugin in lab.
 Python 3.0+ based.
 
+# HOW TO USE THIS
+![image](https://github.com/joleeene/MayaToolbox/assets/52316301/d53fe32c-e2e4-43bf-87b0-02e8c1a52886)
+Hit it, and you should see the codes.
+
+![image](https://github.com/joleeene/MayaToolbox/assets/52316301/fabb0371-2404-4fe9-bbe7-403a5f5ff8e2)
+Hit this Copy button and head back to Maya.
+
+![image](https://github.com/joleeene/MayaToolbox/assets/52316301/5a85a54c-e0c6-4a7c-89a6-bcf863de5aef)
+Press Ctrl+F and search for "Script Editor" at Maya 2023+, else you gotta look for where it is:D(I don't have search bar in my 2022-)
+Paste it here and run, and remember to save this file somewhere in your storage. If updates, you can repeat the steps to acquire the new versions.
+
+
 # HOW TO USE NAMING
 
 1. Select all nodes you want.
