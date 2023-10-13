@@ -5,6 +5,14 @@ import maya.OpenMayaUI as omui
 import shiboken2
 import maya.cmds as cmds
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
+
+sVersion = "0.01"
+"""
+Log:
+2023.10.13 
+Naming tool now accepts %N for all func. and smart increment
+"""
+
 def mayaMainWindow():
     mainWindowPointer = omui.MQtUtil.mainWindow()
     return shiboken2.wrapInstance(int(mainWindowPointer),p2.QtWidgets.QWidget)
@@ -12,13 +20,13 @@ def mayaMainWindow():
 class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
     def __init__(self, parent=mayaMainWindow()):
         super(cls_Window, self).__init__(parent)
-        self.setWindowTitle("CA2023 Toolbox"); self.resize(300,500)
+        self.setWindowTitle("CA2023 Toolbox"+" "+sVersion); self.resize(300,500)
         TabGrp_TabGrp = p2.QtWidgets.QTabWidget()
         #self.Tab_General = p2.QtWidgets.QWidget(); self.TabGrp_TabGrp.addTab(self.Tab_General, "General")
-        TabGrp_TabGrp.addTab(Tab_General(), "Ggg" )
+        TabGrp_TabGrp.addTab(Tab_General(), "General" )
         TabGrp_TabGrp.addTab(Tab_Naming(), "Naming")
 
-        BtTestFunction = p2.QtWidgets.QPushButton('Press to print something')
+        BtTestFunction = p2.QtWidgets.QPushButton('Press to print selected nodes')
         
         QVBL_mainLayout = p2.QtWidgets.QVBoxLayout(self)
         QVBL_mainLayout.addWidget(TabGrp_TabGrp)
@@ -27,7 +35,7 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         BtTestFunction.clicked.connect(self.FuncTest)
     def FuncTest(self):
         selected_nodes = cmds.ls(selection=True, long=False)
-        print(selected_nodes)
+        print(selected_nodes.index)
         
 class Tab_General(p2.QtWidgets.QWidget):
     def __init__(self, parent = None):
@@ -37,24 +45,48 @@ class Tab_General(p2.QtWidgets.QWidget):
         self.QGLTab_General = p2.QtWidgets.QGridLayout(self.QWContainer)
         self.QWContainer.setFixedHeight(200)
 
-        self.QLGetChildNodes = p2.QtWidgets.QLabel("GetChildNodes")
         self.QLShow =p2.QtWidgets.QLabel("Display return value")
         self.QPBGetChildNodes = p2.QtWidgets.QPushButton("GetChildNodes")
-        
-        self.QGLTab_General.addWidget(self.QLGetChildNodes,0,0,p2.QtCore.Qt.AlignTop)
-        self.QGLTab_General.addWidget(self.QPBGetChildNodes,0,1,p2.QtCore.Qt.AlignTop)
+
+        self.QGLTab_General.addWidget(self.QPBGetChildNodes,0,0,p2.QtCore.Qt.AlignTop)
         self.QGLTab_General.addWidget(self.QLShow,1,0,p2.QtCore.Qt.AlignTop)
+
+        #FakeC
+        """CheckAllnodesName
+        get type
+        if type =
+            rule 1
+        if type .....
+
+        get all Construction history.
+        if construction history not belong to safeConstructionHistory[]
+            write in file.
+            """
+
         
         #show
         self.QVBL_mainLayout = p2.QtWidgets.QVBoxLayout(self)
         self.QVBL_mainLayout.addWidget(self.QWContainer)
         
         self.QPBGetChildNodes.clicked.connect(self.FuncGetChildNodes)
+        
         #Func
     def FuncGetChildNodes(self):
         selected_nodes = cmds.ls(selection = True)
-        print(selected_nodes)
-        pass
+        selected_nodes_children = cmds.listRelatives(selected_nodes, 
+                                                        allDescendents=True, 
+                                                        children=True, 
+                                                        type="transform"
+                                                        )
+        for i in range(len(selected_nodes)):
+            selected_nodes_children.insert(0,selected_nodes[len(selected_nodes)-1-i])
+        slNodes_rmDup = selected_nodes_children
+        slNodes_rmDup = list(dict.fromkeys(slNodes_rmDup))
+        cmds.select(slNodes_rmDup)
+        print(slNodes_rmDup)
+
+        
+        
 
 class Tab_Naming(p2.QtWidgets.QWidget):
     def __init__(self, parent=None):
@@ -98,9 +130,15 @@ class Tab_Naming(p2.QtWidgets.QWidget):
         self.QGLTab_Naming.addWidget(self.QLEWhole,4,1,p2.QtCore.Qt.AlignTop)
         self.QGLTab_Naming.addWidget(self.QPBWholeExe,4,2,p2.QtCore.Qt.AlignTop)
         
-        self.QLPlus = p2.QtWidgets.QLabel("Plus")
-        self.QLPlus.setAlignment(p2.QtCore.Qt.AlignTop)
-        self.QLPlus.setFrameShape(p2.QtWidgets.QFrame.Box)
+        self.QLInstruction = p2.QtWidgets.QLabel("""
+        How to use: \r\n
+        1. Select all nodes you want. \r\n
+        2. Input the string. \r\n
+        3. Hit Execute button. 
+                        """)
+        self.QLInstruction.setAlignment(p2.QtCore.Qt.AlignTop)
+        self.QLInstruction.setFrameShape(p2.QtWidgets.QFrame.Box)
+        self.QLPreview = p2.QtWidgets.QLabel("Here display what will be")
         
         #button
         self.QPBPrefixExe.clicked.connect(self.FuncExePrefix)
@@ -111,7 +149,7 @@ class Tab_Naming(p2.QtWidgets.QWidget):
         #Show
         self.QVBL_mainLayout = p2.QtWidgets.QVBoxLayout(self)
         self.QVBL_mainLayout.addWidget(self.QWContainer)
-        self.QVBL_mainLayout.addWidget(self.QLPlus)
+        self.QVBL_mainLayout.addWidget(self.QLInstruction)
 
     def FuncExePrefix(self):
         selected_nodes = cmds.ls(selection=True)
@@ -120,11 +158,10 @@ class Tab_Naming(p2.QtWidgets.QWidget):
         if IncrementKey in self.QLEPrefix.text():
             for i in range(len(selected_nodes)):
                 Increment = i+1
-                recQLEPrefix = self.QLEPrefix.text().replace(IncrementKey, str(Increment))
+                StrIncrement = "0" + str(Increment)
+                recQLEPrefix = self.QLEPrefix.text().replace(IncrementKey, StrIncrement)
                 NewName = recQLEPrefix + selected_nodes[i]
                 cmds.rename(selected_nodes[i], NewName) 
-            else:
-                print("No nodes selected")
         else:
             for i in range(len(selected_nodes)):
                 Increment = i+1
@@ -152,50 +189,45 @@ class Tab_Naming(p2.QtWidgets.QWidget):
     def FuncExeReplace(self):
         selected_nodes = cmds.ls(selection=True)
         print(selected_nodes)
-        if selected_nodes:
-            for i in selected_nodes:
-                #First occurrence.
-                NewName = i.replace(self.QLEReplace.text(), self.QLEWith.text(), 1)
-                cmds.rename(i, NewName)
+        IncrementKey = "$N"
+        if IncrementKey in self.QLEWith.text():
+            for i in range(len(selected_nodes)):
+                Increment = i+1
+                recQLEWith = self.QLEWith.text().replace(IncrementKey, str(Increment))
+                NewName = selected_nodes[i].replace(self.QLEReplace.text(), recQLEWith, 1)
+                cmds.rename(selected_nodes[i], NewName)
+            else:
+                print("No nodes selected")
         else:
-            print("No nodes selected")
+            for i in range(len(selected_nodes)):
+                Increment =i+1
+                NewName = selected_nodes[i].replace(self.QLEReplace.text(), self.QLEWith.text(), 1)
+                cmds.rename(selected_nodes[i], NewName)
 
     def FuncExeWhole(self):
         #Must add Increment
         selected_nodes = cmds.ls(selection=True)
+        
         print(selected_nodes)
         for i in range(len(selected_nodes)):
             Increment = i+1
-            NewName = self.QLEWhole.text() + str(Increment)
-            cmds.rename(selected_nodes[i], NewName) 
+            #Pending optimization:
+            #i+1 % 10 
+            if (i+1<=9):
+                StrIncrement = "0" +str(Increment)
+                NewName = self.QLEWhole.text() + StrIncrement
+                cmds.rename(selected_nodes[i], NewName) 
+            else:
+                StrIncrement =  str(Increment)
+                NewName = self.QLEWhole.text() + StrIncrement
+                cmds.rename(selected_nodes[i], NewName) 
         else:
             print("No nodes selected")
-    
+        
     def SupFuncIncrement(self, str): #Pending
         pass
 
-    # def FuncExeReplace(self):
-    #     selected_objects = cmds.ls(selection=True)
 
-    #     search_string = "_g"  # Specify the part you want to replace
-    #     replace_string = "_G"  # Specify the replacement string
-
-    #     # Check if any object is selected
-    #     if selected_objects:
-    #         for selected_object in selected_objects:
-    #             # Check if the search string is present in the node name
-    #             if search_string in selected_object:
-    #                 # Perform the name replacement
-    #                 new_name = selected_object.replace(search_string, replace_string)
-
-    #                 # Rename the object with the new name
-    #                 cmds.rename(selected_object, new_name)
-    #             else:
-    #                 # If the search string is not found, print a message
-    #                 print("Search string not found in object name:", selected_object)
-    #     else:
-    #         # If no objects are selected, print a message
-    #         print("No objects selected.")
         
 
 if __name__ == '__main__':
