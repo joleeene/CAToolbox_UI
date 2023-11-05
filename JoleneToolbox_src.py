@@ -1,5 +1,6 @@
 #MEL: commandPort -name "localhost:7001" -sourceType "mel" -echoOutput;
 #https://www.youtube.com/watch?v=lBz8lEqHXYM&ab_channel=TDSuperheroes
+from re import S
 import PySide2 as p2
 import maya.OpenMayaUI as omui
 import shiboken2
@@ -40,18 +41,42 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
 class Tab_General(p2.QtWidgets.QWidget):
     def __init__(self, parent = None):
         p2.QtWidgets.QWidget.__init__(self, parent)
+        #Public
+        self.attrArray = [
+        ".translateX",
+        ".translateY",
+        ".translateZ",
+        ".rotateX",
+        ".rotateY",
+        ".rotateZ"
+        ]
+        self.depot = []
         #UI
         self.QWContainer = p2.QtWidgets.QWidget()
         self.QGLTab_General = p2.QtWidgets.QGridLayout(self.QWContainer)
         self.QWContainer.setFixedHeight(200)
 
-        self.QLShow =p2.QtWidgets.QLabel("Display return value")
         self.QPBGetChildNodes = p2.QtWidgets.QPushButton("GetChildNodes")
+        self.QPBGetRelativeT = p2.QtWidgets.QPushButton("GetRelativeTransform")
+        self.QPBSetRelativeT = p2.QtWidgets.QPushButton("SetRealtiveTransform")
+        self.QPBSetToZero = p2.QtWidgets.QPushButton("BackToOrigin")
+        self.QPBGetMatrix = p2.QtWidgets.QPushButton("GetMatrix")
+        self.QPBSetMatrix = p2.QtWidgets.QPushButton("SetMatrix")
+
+        
+        self.QLShow =p2.QtWidgets.QLabel("Display return value")
+        self.QLShow.setAlignment(p2.QtCore.Qt.AlignTop)
+        self.QLShow.setFrameShape(p2.QtWidgets.QFrame.Box)
 
         self.QGLTab_General.addWidget(self.QPBGetChildNodes,0,0,p2.QtCore.Qt.AlignTop)
-        self.QGLTab_General.addWidget(self.QLShow,1,0,p2.QtCore.Qt.AlignTop)
-
-        #FakeC
+        self.QGLTab_General.addWidget(self.QPBGetRelativeT,0,1,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_General.addWidget(self.QPBSetRelativeT,1,0,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_General.addWidget(self.QPBSetToZero,1,1,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_General.addWidget(self.QPBGetMatrix,2,0,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_General.addWidget(self.QPBSetMatrix,2,1,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_General.addWidget(self.QLShow,3,0,p2.QtCore.Qt.AlignTop)
+     
+        #FakeCode
         """CheckAllnodesName
         get type
         if type =
@@ -63,12 +88,16 @@ class Tab_General(p2.QtWidgets.QWidget):
             write in file.
             """
 
-        
         #show
         self.QVBL_mainLayout = p2.QtWidgets.QVBoxLayout(self)
         self.QVBL_mainLayout.addWidget(self.QWContainer)
         
         self.QPBGetChildNodes.clicked.connect(self.FuncGetChildNodes)
+        self.QPBGetRelativeT.clicked.connect(self.FuncGetRelativeT)
+        self.QPBSetRelativeT.clicked.connect(self.FuncSetRelativeT)
+        self.QPBSetToZero.clicked.connect(self.FuncSetToZero)
+        self.QPBGetMatrix.clicked.connect(self.FuncGetMatrix)
+        self.QPBSetMatrix.clicked.connect(self.FuncSetMatrix)
         
         #Func
     def FuncGetChildNodes(self):
@@ -85,8 +114,50 @@ class Tab_General(p2.QtWidgets.QWidget):
         cmds.select(slNodes_rmDup)
         print(slNodes_rmDup)
 
+    def FuncGetRelativeT(self):
+        sl_obj = cmds.ls(selection = True)[0]
+        if not sl_obj:
+            print("Nothing selected or Not having a transform attr.")
+            return
         
-        
+        for i in range(len(self.attrArray)):
+            self.depot.append(cmds.getAttr(sl_obj + self.attrArray[i]))
+
+        self.QLShow.setText(f"""
+            P: {round(self.depot[0], 3)}  {round(self.depot[1], 3)}  {round(self.depot[2], 3)} \r\n
+            R: {round(self.depot[3], 3)}  {round(self.depot[4], 3)}  {round(self.depot[5], 3)} \r\n
+            """)
+    
+    def FuncSetRelativeT(self):
+        sl_objs = cmds.ls(selection =True)
+
+        if not sl_objs:
+            print("Nothing selected or Not having a transform attr.")
+            return
+        for j in range(len(sl_objs)):
+            for i in range(len(self.attrArray)):
+                cmds.setAttr(sl_objs[j] + self.attrArray[i], self.depot[i])
+
+    def FuncSetToZero(self):
+        sl_objs = cmds.ls(selection =True)
+        if not sl_objs:
+            print("Nothing selected or Not having a transform attr.")
+            return
+        #for j in range(len(sl_objs)):
+        #    for i in range(len(self.attrArray)):
+        cmds.move(0,0,0, rotatePivotRelative=True)
+
+    def FuncGetMatrix(self):
+        sl_obj = cmds.ls(selection=True)[0]
+        M = cmds.xform(sl_obj, query=True, matrix=True, worldSpace=True)
+        print(M)
+
+    def FuncSetMatrix(self):
+        sl_obj = cmds.ls(selection=True)[0]
+        B = cmds.getAttr(sl_obj+"."+"worldMatrix")
+        B = cmds.xform(sl_obj, q=True, m=True, ws=True)
+        print(B)
+
 
 class Tab_Naming(p2.QtWidgets.QWidget):
     def __init__(self, parent=None):
@@ -226,10 +297,7 @@ class Tab_Naming(p2.QtWidgets.QWidget):
         
     def SupFuncIncrement(self, str): #Pending
         pass
-
-
-        
-
+ 
 if __name__ == '__main__':
     Win_JoleneToolbox = cls_Window()
     Win_JoleneToolbox.show(dockable=True)
