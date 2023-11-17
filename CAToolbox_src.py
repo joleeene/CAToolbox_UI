@@ -1,6 +1,6 @@
 #MEL: commandPort -name "localhost:7001" -sourceType "mel" -echoOutput;
 #https://www.youtube.com/watch?v=lBz8lEqHXYM&ab_channel=TDSuperheroes
-from re import S
+#from re import S
 import PySide2 as p2
 import maya.OpenMayaUI as omui
 import shiboken2
@@ -23,9 +23,9 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         super(cls_Window, self).__init__(parent)
         self.setWindowTitle("CA2023 Toolbox"+" "+sVersion); self.resize(300,500)
         TabGrp_TabGrp = p2.QtWidgets.QTabWidget()
-        #self.Tab_General = p2.QtWidgets.QWidget(); self.TabGrp_TabGrp.addTab(self.Tab_General, "General")
         TabGrp_TabGrp.addTab(Tab_General(), "General" )
         TabGrp_TabGrp.addTab(Tab_Naming(), "Naming")
+        TabGrp_TabGrp.addTab(Tab_Rigging(), "Rigging")
 
         BtTestFunction = p2.QtWidgets.QPushButton('Press to print selected nodes')
         
@@ -50,7 +50,7 @@ class Tab_General(p2.QtWidgets.QWidget):
         ".rotateY",
         ".rotateZ"
         ]
-        self.depot = []
+
         #UI
         self.QWContainer = p2.QtWidgets.QWidget()
         self.QGLTab_General = p2.QtWidgets.QGridLayout(self.QWContainer)
@@ -115,6 +115,7 @@ class Tab_General(p2.QtWidgets.QWidget):
         print(slNodes_rmDup)
 
     def FuncGetRelativeT(self):
+        self.depot = []
         sl_obj = cmds.ls(selection = True)[0]
         if not sl_obj:
             print("Nothing selected or Not having a transform attr.")
@@ -136,7 +137,11 @@ class Tab_General(p2.QtWidgets.QWidget):
             return
         for j in range(len(sl_objs)):
             for i in range(len(self.attrArray)):
-                cmds.setAttr(sl_objs[j] + self.attrArray[i], self.depot[i])
+                BLattrLocked = cmds.getAttr(sl_objs[j] + self.attrArray[i], lock=True)
+                if BLattrLocked:
+                    continue
+                else:
+                    cmds.setAttr(sl_objs[j] + self.attrArray[i], self.depot[i])
 
     def FuncSetToZero(self):
         sl_objs = cmds.ls(selection =True)
@@ -157,7 +162,6 @@ class Tab_General(p2.QtWidgets.QWidget):
         B = cmds.getAttr(sl_obj+"."+"worldMatrix")
         B = cmds.xform(sl_obj, q=True, m=True, ws=True)
         print(B)
-
 
 class Tab_Naming(p2.QtWidgets.QWidget):
     def __init__(self, parent=None):
@@ -298,6 +302,69 @@ class Tab_Naming(p2.QtWidgets.QWidget):
     def SupFuncIncrement(self, str): #Pending
         pass
  
+class Tab_Rigging(p2.QtWidgets.QWidget):
+    def __init__(self, parent=None):
+        p2.QtWidgets.QWidget.__init__(self,parent)
+        #UI
+        self.QWContainer = p2.QtWidgets.QWidget()
+        self.QGLTab_Naming = p2.QtWidgets.QGridLayout(self.QWContainer)
+        self.QWContainer.setFixedHeight(200)
+        #button
+        self.QPBColorReturn = p2.QtWidgets.QPushButton("ColorReturn", self)
+        self.QPBColorYellow = p2.QtWidgets.QPushButton("ColorYellow", self)
+        self.QPBColorRed = p2.QtWidgets.QPushButton("ColorRed", self)
+        self.QPBColorBlue = p2.QtWidgets.QPushButton("ColorBlue", self)
+        
+        self.QLJointSize = p2.QtWidgets.QLabel("JointSize")
+        self.QLEJointSize = p2.QtWidgets.QLineEdit("")
+        self.QPBJointSizeExe = p2.QtWidgets.QPushButton("Execute", self)
+
+        self.QGLTab_Naming.addWidget(self.QPBColorReturn,0,0,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_Naming.addWidget(self.QPBColorYellow,0,1,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_Naming.addWidget(self.QPBColorRed,1,0,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_Naming.addWidget(self.QPBColorBlue,1,1,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_Naming.addWidget(self.QLJointSize,2,0,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_Naming.addWidget(self.QLEJointSize,2,1,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_Naming.addWidget(self.QPBJointSizeExe,2,2,p2.QtCore.Qt.AlignTop)
+        #interaction
+        self.QPBColorReturn.clicked.connect(self.FuncColorReturn)
+        self.QPBColorYellow.clicked.connect(self.FuncColorYellow)
+        self.QPBColorRed.clicked.connect(self.FuncColorRed)
+        self.QPBColorBlue.clicked.connect(self.FuncColorBlue)
+
+        self.QPBJointSizeExe.clicked.connect(self.FuncExeJointSize)
+        #show
+        self.QVBL_mainLayout = p2.QtWidgets.QVBoxLayout(self)
+        self.QVBL_mainLayout.addWidget(self.QWContainer)
+
+    def FuncColorReturn(self):
+        sl_objs = cmds.ls(selection=True)
+        for i in range(len(sl_objs)):
+            cmds.setAttr(sl_objs[i] + '.overrideColor', 0)
+            cmds.setAttr(sl_objs[i] + '.overrideEnabled', 0)
+
+    def FuncColorYellow(self):
+        sl_objs = cmds.ls(selection=True)
+        for i in range(len(sl_objs)):
+            cmds.setAttr(sl_objs[i] + '.overrideEnabled', 1)
+            cmds.setAttr(sl_objs[i] + '.overrideColor', 17)
+
+    def FuncColorRed(self):
+        sl_objs = cmds.ls(selection=True)
+        for i in range(len(sl_objs)):
+            cmds.setAttr(sl_objs[i] + '.overrideEnabled', 1)
+            cmds.setAttr(sl_objs[i] + '.overrideColor', 13)
+
+    def FuncColorBlue(self):
+        sl_objs = cmds.ls(selection=True)
+        for i in range(len(sl_objs)):
+            cmds.setAttr(sl_objs[i] + '.overrideEnabled', 1)
+            cmds.setAttr(sl_objs[i] + '.overrideColor', 6)
+
+    def FuncExeJointSize(self):
+        sl_objs = cmds.ls(selection=True)
+        for i in range(len(sl_objs)):
+            cmds.setAttr(sl_objs[i]+".radius", float(self.QLEJointSize.text()))
 if __name__ == '__main__':
     Win_JoleneToolbox = cls_Window()
     Win_JoleneToolbox.show(dockable=True)
