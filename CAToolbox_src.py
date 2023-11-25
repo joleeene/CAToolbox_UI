@@ -62,6 +62,7 @@ class Tab_General(p2.QtWidgets.QWidget):
         self.QPBSetToZero = p2.QtWidgets.QPushButton("BackToOrigin")
         self.QPBGetMatrix = p2.QtWidgets.QPushButton("GetMatrix")
         self.QPBSetMatrix = p2.QtWidgets.QPushButton("SetMatrix")
+        self.QPBCreateGarbage = p2.QtWidgets.QPushButton("CreateGarbage")
 
         
         self.QLShow =p2.QtWidgets.QLabel("Display return value")
@@ -74,7 +75,8 @@ class Tab_General(p2.QtWidgets.QWidget):
         self.QGLTab_General.addWidget(self.QPBSetToZero,1,1,p2.QtCore.Qt.AlignTop)
         self.QGLTab_General.addWidget(self.QPBGetMatrix,2,0,p2.QtCore.Qt.AlignTop)
         self.QGLTab_General.addWidget(self.QPBSetMatrix,2,1,p2.QtCore.Qt.AlignTop)
-        self.QGLTab_General.addWidget(self.QLShow,3,0,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_General.addWidget(self.QPBCreateGarbage,3,0,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_General.addWidget(self.QLShow,4,0,p2.QtCore.Qt.AlignTop)
      
         #FakeCode
         """CheckAllnodesName
@@ -98,6 +100,7 @@ class Tab_General(p2.QtWidgets.QWidget):
         self.QPBSetToZero.clicked.connect(self.FuncSetToZero)
         self.QPBGetMatrix.clicked.connect(self.FuncGetMatrix)
         self.QPBSetMatrix.clicked.connect(self.FuncSetMatrix)
+        self.QPBCreateGarbage.clicked.connect(self.FuncCreateGarbage)
         
         #Func
     def FuncGetChildNodes(self):
@@ -162,6 +165,28 @@ class Tab_General(p2.QtWidgets.QWidget):
         B = cmds.getAttr(sl_obj+"."+"worldMatrix")
         B = cmds.xform(sl_obj, q=True, m=True, ws=True)
         print(B)
+
+    def FuncCreateGarbage(self):
+        sl_objs = cmds.ls(selection=True)   
+        # Get the world transform of the object
+        world_transform_pool=[]
+        for i in range(len(sl_objs)):
+            world_transform_pool.append(cmds.xform(sl_objs[i], query=True, worldSpace=True, matrix=True))
+        # Get the original parent of the object
+        original_parent_pool=[]
+        for i in range(len(sl_objs)):
+            original_parent_pool.append(cmds.listRelatives(sl_objs[i], parent=True))
+        # Create a null object with the same world transform
+        for i in range(len(sl_objs)):
+            null_object = cmds.group(empty=True, name=sl_objs[i]+"Garbage")
+            cmds.xform(null_object, worldSpace=True, matrix = world_transform_pool[i])
+            # Parent the original object under the null object
+            cmds.parent(sl_objs[i], null_object)
+        # Reparent the original object to its original parent
+            if original_parent_pool[i]:
+                cmds.parent(null_object, original_parent_pool[i])
+
+            
 
 class Tab_Naming(p2.QtWidgets.QWidget):
     def __init__(self, parent=None):
