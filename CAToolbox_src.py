@@ -1,7 +1,9 @@
 #MEL: commandPort -name "localhost:7001" -sourceType "mel" -echoOutput;
 #https://www.youtube.com/watch?v=lBz8lEqHXYM&ab_channel=TDSuperheroes
 #from re import S
+import math
 import PySide2 as p2
+import re
 import maya.OpenMayaUI as omui
 import shiboken2
 import maya.cmds as cmds
@@ -251,79 +253,136 @@ class Tab_Naming(p2.QtWidgets.QWidget):
         self.QVBL_mainLayout.addWidget(self.QWContainer)
         self.QVBL_mainLayout.addWidget(self.QLInstruction)
 
+    def AuxFuncMakeRelativeName(self, selected_objs): #input: origin selected objs list
+        RelativeNameList = []
+        for i in range(len(selected_objs)):
+            RelativeName = re.sub(r"^.*\|", "", selected_objs[i])
+            RelativeNameList.append(RelativeName)
+        return RelativeNameList
+
     def FuncExePrefix(self):
-        selected_nodes = cmds.ls(selection=True)
-        print(selected_nodes)
+        sl_objs = cmds.ls(selection=True) #origin namepath list
+        Re_sl_objs = self.AuxFuncMakeRelativeName(sl_objs) #relative namepath list
+        print(Re_sl_objs)
+
         IncrementKey = "$N"
+        Zero = "0"
+        MaxZero = math.floor(math.log10(len(sl_objs)))+1
         if IncrementKey in self.QLEPrefix.text():
-            for i in range(len(selected_nodes)):
+            for i in range(len(sl_objs)):
                 Increment = i+1
-                StrIncrement = "0" + str(Increment)
-                recQLEPrefix = self.QLEPrefix.text().replace(IncrementKey, StrIncrement)
-                NewName = recQLEPrefix + selected_nodes[i]
-                cmds.rename(selected_nodes[i], NewName) 
+                ZeroDigits = MaxZero -math.floor(math.log10(Increment))
+                Zero_Apply = ""
+                for j in range(ZeroDigits):
+                    Zero_Apply = Zero_Apply + Zero
+                    
+                recIncrement = Zero_Apply + str(Increment)
+                recQLEPrefix = self.QLEPrefix.text().replace(IncrementKey, recIncrement)
+                print(recQLEPrefix)
+                NewName = recQLEPrefix + Re_sl_objs[i]
+                cmds.rename(sl_objs[i], NewName)
+                sl_objs = cmds.ls(selection=True)
         else:
-            for i in range(len(selected_nodes)):
+            for i in range(len(sl_objs)):
                 Increment = i+1
-                NewName = self.QLEPrefix.text() + selected_nodes[i]
-                cmds.rename(selected_nodes[i], NewName) 
+                NewName = self.QLEPrefix.text() + Re_sl_objs[i]
+                cmds.rename(sl_objs[i], NewName)
+                sl_objs = cmds.ls(selection=True)
 
     def FuncExeSuffix(self):
-        selected_nodes = cmds.ls(selection=True)
-        print(selected_nodes)
+        sl_objs = cmds.ls(selection=True)
+        Re_sl_objs = self.AuxFuncMakeRelativeName(sl_objs) #relative namepath list
+        print(Re_sl_objs)
         IncrementKey = "$N"
+        Zero = "0"
+        MaxZero = math.floor(math.log10(len(sl_objs)))+1
         if IncrementKey in self.QLESuffix.text():
-            for i in range(len(selected_nodes)):
+            for i in range(len(sl_objs)):
                 Increment = i+1
-                recQLESuffix = self.QLESuffix.text().replace(IncrementKey, str(Increment))
-                NewName = selected_nodes[i] + recQLESuffix
-                cmds.rename(selected_nodes[i], NewName) 
+                ZeroDigits = MaxZero -math.floor(math.log10(Increment))
+                Zero_Apply = ""
+                for j in range(ZeroDigits):
+                    Zero_Apply = Zero_Apply + Zero
+                    
+                recIncrement = Zero_Apply + str(Increment)
+                recQLESuffix = self.QLESuffix.text().replace(IncrementKey, recIncrement)
+                NewName = Re_sl_objs[i] + recQLESuffix
+                cmds.rename(sl_objs[i], NewName)
+                sl_objs = cmds.ls(selection=True)
             else:
                 print("No nodes selected")
         else:
-            for i in range(len(selected_nodes)):
+            for i in range(len(sl_objs)):
                 Increment = i+1
-                NewName = selected_nodes[i] + self.QLESuffix.text()
-                cmds.rename(selected_nodes[i], NewName) 
+                NewName = Re_sl_objs[i] + self.QLESuffix.text()
+                cmds.rename(sl_objs[i], NewName)
+                sl_objs = cmds.ls(selection=True)
+
             
     def FuncExeReplace(self):
-        selected_nodes = cmds.ls(selection=True)
-        print(selected_nodes)
+        sl_objs = cmds.ls(selection=True)
+        Re_sl_objs = self.AuxFuncMakeRelativeName(sl_objs) #relative namepath list
+        print(Re_sl_objs)
         IncrementKey = "$N"
+        Zero = "0"
+        MaxZero = math.floor(math.log10(len(sl_objs)))+1
         if IncrementKey in self.QLEWith.text():
-            for i in range(len(selected_nodes)):
+            for i in range(len(sl_objs)):
                 Increment = i+1
-                recQLEWith = self.QLEWith.text().replace(IncrementKey, str(Increment))
-                NewName = selected_nodes[i].replace(self.QLEReplace.text(), recQLEWith, 1)
-                cmds.rename(selected_nodes[i], NewName)
+                ZeroDigits = MaxZero -math.floor(math.log10(Increment))
+                Zero_Apply = ""
+                for j in range(ZeroDigits):
+                    Zero_Apply = Zero_Apply + Zero
+                    
+                recIncrement = Zero_Apply + str(Increment)
+                recQLEWith = self.QLEWith.text().replace(IncrementKey, recIncrement)
+                NewName = Re_sl_objs[i].replace(self.QLEReplace.text(), recQLEWith, 1)
+                cmds.rename(sl_objs[i], NewName)
+                sl_objs = cmds.ls(selection=True)
             else:
                 print("No nodes selected")
         else:
-            for i in range(len(selected_nodes)):
+            for i in range(len(sl_objs)):
                 Increment =i+1
-                NewName = selected_nodes[i].replace(self.QLEReplace.text(), self.QLEWith.text(), 1)
-                cmds.rename(selected_nodes[i], NewName)
+                NewName = Re_sl_objs[i].replace(self.QLEReplace.text(), self.QLEWith.text(), 1)
+                cmds.rename(sl_objs[i], NewName)
+                sl_objs = cmds.ls(selection=True)
 
     def FuncExeWhole(self):
         #Must add Increment
-        selected_nodes = cmds.ls(selection=True)
+        sl_objs = cmds.ls(selection=True)
+        Re_sl_objs = self.AuxFuncMakeRelativeName(sl_objs) #relative namepath list
+        IncrementKey = "$N"
+        Zero = "0"
+        # if  sl_objs<=99, maxZero = 2 = math.ceiling.math.log10(len(sl_objs))
+        #     add 00 for i+1 C 1~9: maxZero - 00.digits = log10(i+1)
+        #     add 0 for i+1 C 10~99:
+        MaxZero =  math.floor(math.log10(len(sl_objs)))+1 #if 1, add one 0. if 2, add two.
         
-        print(selected_nodes)
-        for i in range(len(selected_nodes)):
-            Increment = i+1
-            #Pending optimization:
-            #i+1 % 10 
-            if (i+1<=9):
-                StrIncrement = "0" +str(Increment)
-                NewName = self.QLEWhole.text() + StrIncrement
-                cmds.rename(selected_nodes[i], NewName) 
+        print("vasdadf"+Zero)
+        print(Re_sl_objs)
+        if IncrementKey in self.QLEWhole.text():
+            for i in range(len(sl_objs)):
+                Increment = i+1
+                ZeroDigits = MaxZero - math.floor(math.log10(Increment))
+                Zero_Apply = ""
+                for j in range(ZeroDigits):
+                        Zero_Apply = Zero_Apply + Zero
+                recIncrement = Zero_Apply + str(Increment)
+                recQLEWhole = self.QLEWhole.text().replace(IncrementKey, recIncrement)
+                print(recQLEWhole)
+                NewName = recQLEWhole
+                cmds.rename(sl_objs[i], NewName)
+                sl_objs = cmds.ls(selection=True)
             else:
-                StrIncrement =  str(Increment)
-                NewName = self.QLEWhole.text() + StrIncrement
-                cmds.rename(selected_nodes[i], NewName) 
+                print("No nodes selected")
         else:
-            print("No nodes selected")
-        
+            for i in range(len(sl_objs)):
+                Increment = i+1
+                NewName = self.QLEWhole.text()
+                cmds.rename(sl_objs[i], NewName)
+                sl_objs = cmds.ls(selection=True)
+    
     def SupFuncIncrement(self, str): #Pending
         pass
  
@@ -365,14 +424,14 @@ class Tab_Rigging(p2.QtWidgets.QWidget):
     def FuncColorReturn(self):
         sl_objs = cmds.ls(selection=True)
         for i in range(len(sl_objs)):
-            cmds.setAttr(sl_objs[i] + '.overrideColor', 0)
-            cmds.setAttr(sl_objs[i] + '.overrideEnabled', 0)
+            cmds.setAttr(sl_objs[i]  + '.overrideColor', 0)
+            cmds.setAttr(sl_objs[i]  + '.overrideEnabled', 0)
 
     def FuncColorYellow(self):
         sl_objs = cmds.ls(selection=True)
         for i in range(len(sl_objs)):
-            cmds.setAttr(sl_objs[i] + '.overrideEnabled', 1)
-            cmds.setAttr(sl_objs[i] + '.overrideColor', 17)
+            cmds.setAttr(sl_objs[i] +  '.overrideEnabled', 1)
+            cmds.setAttr(sl_objs[i] +  '.overrideColor', 17)
 
     def FuncColorRed(self):
         sl_objs = cmds.ls(selection=True)
