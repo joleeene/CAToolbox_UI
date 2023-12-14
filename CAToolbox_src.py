@@ -1,19 +1,23 @@
 #MEL: commandPort -name "localhost:7001" -sourceType "mel" -echoOutput;
 #https://www.youtube.com/watch?v=lBz8lEqHXYM&ab_channel=TDSuperheroes
-#from re import S
 import math
+import copy
 import PySide2 as p2
 import re
 import maya.OpenMayaUI as omui
 import shiboken2
 import maya.cmds as cmds
+from PySide2 import QtGui, QtCore
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
 
-sVersion = "0.01"
+sVersion = "0.02"
 """
 Log:
 2023.10.13 
 Naming tool now accepts %N for all func. and smart increment
+
+2023.12.08
+Solved renaming prob, which caused u can't exe on obj sharing same name
 """
 
 def mayaMainWindow():
@@ -38,7 +42,7 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         BtTestFunction.clicked.connect(self.FuncTest)
     def FuncTest(self):
         selected_nodes = cmds.ls(selection=True, long=False)
-        print(selected_nodes.index)
+        print(selected_nodes)
         
 class Tab_General(p2.QtWidgets.QWidget):
     def __init__(self, parent = None):
@@ -187,8 +191,6 @@ class Tab_General(p2.QtWidgets.QWidget):
         # Reparent the original object to its original parent
             if original_parent_pool[i]:
                 cmds.parent(null_object, original_parent_pool[i])
-
-            
 
 class Tab_Naming(p2.QtWidgets.QWidget):
     def __init__(self, parent=None):
@@ -385,41 +387,155 @@ class Tab_Naming(p2.QtWidgets.QWidget):
     
     def SupFuncIncrement(self, str): #Pending
         pass
- 
+
+class ClickableLabel(p2.QtWidgets.QLabel):
+    clicked = QtCore.Signal()
+    def mousePressEvent(self, event):
+        self.clicked.emit()
 class Tab_Rigging(p2.QtWidgets.QWidget):
     def __init__(self, parent=None):
         p2.QtWidgets.QWidget.__init__(self,parent)
-        #UI
         self.QWContainer = p2.QtWidgets.QWidget()
-        self.QGLTab_Naming = p2.QtWidgets.QGridLayout(self.QWContainer)
         self.QWContainer.setFixedHeight(200)
-        #button
+        self.QGLTab_Rigging = p2.QtWidgets.QGridLayout(self.QWContainer)
+        #module dev
+        self.QGridLayoutPos = [#not used yet
+            (0,0,"CtrlerCube"),
+            (0,1,"CtrlerSphere"),
+            (0,2,"CtrlPrism"),
+            (1,0,"QPBColorReturn"),
+            (1,1,"QPBColorYellow"),
+            (2,0,"QPBColorRed"),
+            (2,1,"QPBColorBlue"),
+            (3,0,"QLJointSize"),
+            (3,1,"QLEJointSize"),
+            (3,2,"QPBJointSizeExe"),
+            (0,0,"ColorReturn")
+            
+        ]
+        #func 1 - 
+        #self.tempIcon_path = os.path.join(os.path.dirname("C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox/images"), "tempIcon.jpg")
+        self.easyToSee = "C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox/"
+        
+        self.QLPathCtrlerCube = self.easyToSee + "images/CtrlerCube.jpg"
+        self.QLCtrlerCube = ClickableLabel("")
+        self.QPxmapCtrlerCube = p2.QtGui.QPixmap(self.QLPathCtrlerCube)
+        self.QLCtrlerCube.setPixmap(self.QPxmapCtrlerCube)
+        self.QLCtrlerCube.setAlignment(QtCore.Qt.AlignCenter)
+        self.QLCtrlerCube.clicked.connect(self.FuncCreateCtrlerCube)
+        self.QGLTab_Rigging.addWidget(self.QLCtrlerCube,0,0,p2.QtCore.Qt.AlignTop)
+
+        self.QLPathCtrlerSphere = self.easyToSee + "images/CtrlerSphere.jpg"
+        self.QLCtrlerSphere = ClickableLabel("")
+        self.QPxmapCtrlerSphere = p2.QtGui.QPixmap(self.QLPathCtrlerSphere)
+        self.QLCtrlerSphere.setPixmap(self.QPxmapCtrlerSphere)
+        self.QLCtrlerSphere.setAlignment(QtCore.Qt.AlignCenter)
+        self.QLCtrlerSphere.clicked.connect(self.FuncCreateCtrlerSphere)
+        self.QGLTab_Rigging.addWidget(self.QLCtrlerSphere,0,1,p2.QtCore.Qt.AlignTop)
+
+        self.QLPathCtrlerPrism = self.easyToSee + "images/CtrlerPrism.jpg"
+        self.QLCtrlerPrism = ClickableLabel("")
+        self.QPxmapCtrlerPrism = p2.QtGui.QPixmap(self.QLPathCtrlerPrism)
+        self.QLCtrlerPrism.setPixmap(self.QPxmapCtrlerPrism)
+        self.QLCtrlerPrism.setAlignment(QtCore.Qt.AlignCenter)
+        self.QLCtrlerPrism.clicked.connect(self.FuncCreateCtrlerPrism)
+        self.QGLTab_Rigging.addWidget(self.QLCtrlerPrism,0,2,p2.QtCore.Qt.AlignTop)
+
+        #func 2 - one click changes thr sl_objs drawoverrides
+        
         self.QPBColorReturn = p2.QtWidgets.QPushButton("ColorReturn", self)
         self.QPBColorYellow = p2.QtWidgets.QPushButton("ColorYellow", self)
         self.QPBColorRed = p2.QtWidgets.QPushButton("ColorRed", self)
         self.QPBColorBlue = p2.QtWidgets.QPushButton("ColorBlue", self)
         
-        self.QLJointSize = p2.QtWidgets.QLabel("JointSize")
-        self.QLEJointSize = p2.QtWidgets.QLineEdit("")
-        self.QPBJointSizeExe = p2.QtWidgets.QPushButton("Execute", self)
-
-        self.QGLTab_Naming.addWidget(self.QPBColorReturn,0,0,p2.QtCore.Qt.AlignTop)
-        self.QGLTab_Naming.addWidget(self.QPBColorYellow,0,1,p2.QtCore.Qt.AlignTop)
-        self.QGLTab_Naming.addWidget(self.QPBColorRed,1,0,p2.QtCore.Qt.AlignTop)
-        self.QGLTab_Naming.addWidget(self.QPBColorBlue,1,1,p2.QtCore.Qt.AlignTop)
-        self.QGLTab_Naming.addWidget(self.QLJointSize,2,0,p2.QtCore.Qt.AlignTop)
-        self.QGLTab_Naming.addWidget(self.QLEJointSize,2,1,p2.QtCore.Qt.AlignTop)
-        self.QGLTab_Naming.addWidget(self.QPBJointSizeExe,2,2,p2.QtCore.Qt.AlignTop)
-        #interaction
+        self.QGLTab_Rigging.addWidget(self.QPBColorReturn,2,0,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_Rigging.addWidget(self.QPBColorYellow,2,1,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_Rigging.addWidget(self.QPBColorRed,3,0,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_Rigging.addWidget(self.QPBColorBlue,3,1,p2.QtCore.Qt.AlignTop)
+        
         self.QPBColorReturn.clicked.connect(self.FuncColorReturn)
         self.QPBColorYellow.clicked.connect(self.FuncColorYellow)
         self.QPBColorRed.clicked.connect(self.FuncColorRed)
         self.QPBColorBlue.clicked.connect(self.FuncColorBlue)
 
+        #func 3 - change sl_jnts size.
+        self.QLJointSize = p2.QtWidgets.QLabel("JointSize")
+        self.QLEJointSize = p2.QtWidgets.QLineEdit("")
+        self.QPBJointSizeExe = p2.QtWidgets.QPushButton("Execute", self)
+
+        self.QGLTab_Rigging.addWidget(self.QLJointSize,4,0,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_Rigging.addWidget(self.QLEJointSize,4,1,p2.QtCore.Qt.AlignTop)
+        self.QGLTab_Rigging.addWidget(self.QPBJointSizeExe,4,2,p2.QtCore.Qt.AlignTop)
+
         self.QPBJointSizeExe.clicked.connect(self.FuncExeJointSize)
-        #show
+        #UI
         self.QVBL_mainLayout = p2.QtWidgets.QVBoxLayout(self)
         self.QVBL_mainLayout.addWidget(self.QWContainer)
+
+    def FuncCreateCtrlerCube(self):
+        #BaseSize = 5
+        CubePathing =  [
+            (-1,1,-1),
+            (-1,1,1),
+            (1,1,1),
+            (1,1,-1),
+            (-1,1,-1),
+            (-1,-1,-1),
+            (-1,-1,1),
+            (-1,1,1),
+            (-1,-1,1),
+            (1,-1,1),
+            (1,1,1),
+            (1,-1,1),
+            (1,-1,-1),
+            (1,1,-1),
+            (1,-1,-1),
+            (-1,-1,-1),
+        ]
+        cmds.curve(d=1, p=CubePathing)
+
+    def FuncCreateCtrlerSphere(self):
+        SpherePathing = []; VertexPos = (0,0,0); VertexAmount = 36 # X times 4
+        for i in range(VertexAmount):
+            pass
+            #BaseSize = 5
+            recAngle = math.radians((i/VertexAmount)*360)
+            VertexPos = (math.cos(recAngle), math.sin(recAngle),0)
+            SpherePathing.append(VertexPos)
+        for i in range(VertexAmount):
+            recAngle = math.radians((i/VertexAmount)*360)
+            VertexPos = (math.cos(recAngle), 0, math.sin(recAngle))
+            SpherePathing.append(VertexPos)
+        SpherePathing.append(SpherePathing[0])
+        temp = copy.deepcopy(SpherePathing)
+        intTemp = int(VertexAmount/4)
+        for i in range(intTemp):
+            SpherePathing.append(temp[-i-1])
+        temp = []
+        for i in range(VertexAmount):
+            recAngle = math.radians((i/VertexAmount)*360)
+            VertexPos = (0, math.sin(recAngle), -math.cos(recAngle))
+            SpherePathing.append(VertexPos)
+        SpherePathing.append(SpherePathing[-36])
+        cmds.curve(d=1, p=SpherePathing)
+
+    def FuncCreateCtrlerPrism(self):
+        PrismPathing = [
+            (1,0,1),
+            (1,0,-1),
+            (-1,0,-1),
+            (-1,0,1),
+            (0,math.sqrt(2),0),
+            (1,0,-1),
+            (0,-math.sqrt(2),0),
+            (-1,0,1),
+            (1,0,1),
+            (0,math.sqrt(2),0),
+            (-1,0,-1),
+            (0,-math.sqrt(2),0),
+            (1,0,1)
+        ]
+        cmds.curve(d=1, p=PrismPathing)
 
     def FuncColorReturn(self):
         sl_objs = cmds.ls(selection=True)
@@ -449,6 +565,7 @@ class Tab_Rigging(p2.QtWidgets.QWidget):
         sl_objs = cmds.ls(selection=True)
         for i in range(len(sl_objs)):
             cmds.setAttr(sl_objs[i]+".radius", float(self.QLEJointSize.text()))
+            
 if __name__ == '__main__':
     Win_JoleneToolbox = cls_Window()
     Win_JoleneToolbox.show(dockable=True)
