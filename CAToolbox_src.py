@@ -8,6 +8,7 @@ import maya.OpenMayaUI as omui
 import shiboken2
 import maya.cmds as cmds
 from PySide2 import QtGui, QtCore
+from PySide2.QtCore import QFile
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
 
 sVersion = "0.02"
@@ -444,74 +445,108 @@ class Tab_Rigging(p2.QtWidgets.QWidget):
         self.easyToSee = "C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox/"
 
         self.QLPathCtrlerCube = self.easyToSee + "images/CtrlerCube.jpg"
-        self.QLCtrlerCube = ClickableLabel("")
-        self.QPxmapCtrlerCube = p2.QtGui.QPixmap(self.QLPathCtrlerCube)
-        self.QLCtrlerCube.setPixmap(self.QPxmapCtrlerCube)
-        self.QLCtrlerCube.setAlignment(QtCore.Qt.AlignCenter)
+        if QFile(self.QLPathCtrlerCube).exists():
+            self.QLCtrlerCube = ClickableLabel("")
+            self.QPxmapCtrlerCube = p2.QtGui.QPixmap(self.QLPathCtrlerCube)
+            self.QLCtrlerCube.setPixmap(self.QPxmapCtrlerCube)
+            self.QLCtrlerCube.setAlignment(QtCore.Qt.AlignCenter)
+        else:   
+            #self.QLCtrlerCube = p2.QtWidgets.QPushButton("Cube", self)
+            self.QLCtrlerCube = ClickableLabel("")
+            self.QPxmapCtrlerCube = p2.QtGui.QPixmap(self.QLPathCtrlerCube)
+            self.QLCtrlerCube.setPixmap(self.QPxmapCtrlerCube)
+            print(self.QPxmapCtrlerCube == True)
         self.QLCtrlerCube.clicked.connect(self.FuncCreateCtrlerCube)
         self.QGLTab_Rigging.addWidget(self.QLCtrlerCube,Ls_CtrlerBtnPos[0][0],Ls_CtrlerBtnPos[0][1],p2.QtCore.Qt.AlignTop)
 
         self.QLPathCtrlerSphere = self.easyToSee + "images/CtrlerSphere.jpg"
-        self.QLCtrlerSphere = ClickableLabel("")
-        self.QPxmapCtrlerSphere = p2.QtGui.QPixmap(self.QLPathCtrlerSphere)
-        self.QLCtrlerSphere.setPixmap(self.QPxmapCtrlerSphere)
-        self.QLCtrlerSphere.setAlignment(QtCore.Qt.AlignCenter)
+        if QFile(self.QLPathCtrlerSphere).exists():
+            self.QLCtrlerSphere = ClickableLabel("")
+            self.QPxmapCtrlerSphere = p2.QtGui.QPixmap(self.QLPathCtrlerSphere)
+            self.QLCtrlerSphere.setPixmap(self.QPxmapCtrlerSphere)
+            self.QLCtrlerSphere.setAlignment(QtCore.Qt.AlignCenter)
+        else:
+            self.QLCtrlerSphere = p2.QtWidgets.QPushButton("Sphere", self)
+        print(QFile(self.QLPathCtrlerSphere).exists())
+        print(QFile(self.QLPathCtrlerSphere).exists() != True)
+        
         self.QLCtrlerSphere.clicked.connect(self.FuncCreateCtrlerSphere)
         self.QGLTab_Rigging.addWidget(self.QLCtrlerSphere,Ls_CtrlerBtnPos[1][0],Ls_CtrlerBtnPos[1][1],p2.QtCore.Qt.AlignTop)
 
         self.QLPathCtrlerPrism = self.easyToSee + "images/CtrlerPrism.jpg"
-        self.QLCtrlerPrism = ClickableLabel("")
-        self.QPxmapCtrlerPrism = p2.QtGui.QPixmap(self.QLPathCtrlerPrism)
-        self.QLCtrlerPrism.setPixmap(self.QPxmapCtrlerPrism)
-        self.QLCtrlerPrism.setAlignment(QtCore.Qt.AlignCenter)
+        if QFile(self.QLPathCtrlerPrism).exists():
+            self.QLCtrlerPrism = ClickableLabel("")
+            self.QPxmapCtrlerPrism = p2.QtGui.QPixmap(self.QLPathCtrlerPrism)
+            self.QLCtrlerPrism.setPixmap(self.QPxmapCtrlerPrism)
+            self.QLCtrlerPrism.setAlignment(QtCore.Qt.AlignCenter)
+        else:
+            self.QLCtrlerPrism = p2.QtWidgets.QPushButton("Prism", self)
         self.QLCtrlerPrism.clicked.connect(self.FuncCreateCtrlerPrism)
         self.QGLTab_Rigging.addWidget(self.QLCtrlerPrism,Ls_CtrlerBtnPos[2][0],Ls_CtrlerBtnPos[2][1],p2.QtCore.Qt.AlignTop)
 
         self.QLPathCtrlerRing = self.easyToSee + "images/CtrlerRing.jpg"
-        self.QLCtrlerRing = ClickableLabel("")
-        self.QPxmapCtrlerRing = p2.QtGui.QPixmap(self.QLPathCtrlerRing)
-        self.QLCtrlerRing.setPixmap(self.QPxmapCtrlerRing)
-        self.QLCtrlerRing.setAlignment(QtCore.Qt.AlignCenter)
+        if QFile(self.QLPathCtrlerRing).exists():
+            self.QLCtrlerRing = ClickableLabel("")
+            self.QPxmapCtrlerRing = p2.QtGui.QPixmap(self.QLPathCtrlerRing)
+            self.QLCtrlerRing.setPixmap(self.QPxmapCtrlerRing)
+            self.QLCtrlerRing.setAlignment(QtCore.Qt.AlignCenter)
+        else:
+            self.QLCtrlerRing = p2.QtWidgets.QPushButton("Ring", self)
         self.QLCtrlerRing.clicked.connect(self.FuncCreateCtrlerRing)
         self.QGLTab_Rigging.addWidget(self.QLCtrlerRing,Ls_CtrlerBtnPos[3][0],Ls_CtrlerBtnPos[3][1],p2.QtCore.Qt.AlignTop)
         
         self.QLPathCtrlerRotPike = self.easyToSee + "images/CtrlerRotPike.jpg"
-        self.QLCtrlerRotPike = ClickableLabel("")
-        self.QPxmapCtrlerRotPike = p2.QtGui.QPixmap(self.QLPathCtrlerRotPike)
-        self.QLCtrlerRotPike.setPixmap(self.QPxmapCtrlerRotPike)
-        self.QLCtrlerRotPike.setAlignment(QtCore.Qt.AlignCenter)
+        if QFile(self.QLPathCtrlerRotPike).exists():
+            self.QLCtrlerRotPike = ClickableLabel("")
+            self.QPxmapCtrlerRotPike = p2.QtGui.QPixmap(self.QLPathCtrlerRotPike)
+            self.QLCtrlerRotPike.setPixmap(self.QPxmapCtrlerRotPike)
+            self.QLCtrlerRotPike.setAlignment(QtCore.Qt.AlignCenter)
+        else:
+            self.QLCtrlerRotPike = p2.QtWidgets.QPushButton("RotPike", self)
         self.QLCtrlerRotPike.clicked.connect(self.FuncCreateCtrlerRotPike)
         self.QGLTab_Rigging.addWidget(self.QLCtrlerRotPike,Ls_CtrlerBtnPos[4][0],Ls_CtrlerBtnPos[4][1],p2.QtCore.Qt.AlignTop)
         
         self.QLPathCtrlerRot1Dir = self.easyToSee + "images/CtrlerRot1Dir.jpg"
-        self.QLCtrlerRot1Dir = ClickableLabel("")
-        self.QPxmapCtrlerRot1Dir = p2.QtGui.QPixmap(self.QLPathCtrlerRot1Dir)
-        self.QLCtrlerRot1Dir.setPixmap(self.QPxmapCtrlerRot1Dir)
-        self.QLCtrlerRot1Dir.setAlignment(QtCore.Qt.AlignCenter)
+        if QFile(self.QLPathCtrlerRot1Dir).exists():
+            self.QLCtrlerRot1Dir = ClickableLabel("")
+            self.QPxmapCtrlerRot1Dir = p2.QtGui.QPixmap(self.QLPathCtrlerRot1Dir)
+            self.QLCtrlerRot1Dir.setPixmap(self.QPxmapCtrlerRot1Dir)
+            self.QLCtrlerRot1Dir.setAlignment(QtCore.Qt.AlignCenter)
+        else:
+            self.QLCtrlerRot1Dir = p2.QtWidgets.QPushButton("Rot1Dir", self)
         self.QLCtrlerRot1Dir.clicked.connect(self.FuncCreateCtrlerRot1Dir)
         self.QGLTab_Rigging.addWidget(self.QLCtrlerRot1Dir,Ls_CtrlerBtnPos[5][0],Ls_CtrlerBtnPos[5][1],p2.QtCore.Qt.AlignTop)
         
         self.QLPathCtrlerTran1Dir = self.easyToSee + "images/CtrlerTran1Dir.jpg"
-        self.QLCtrlerTran1Dir = ClickableLabel("")
-        self.QPxmapCtrlerTran1Dir = p2.QtGui.QPixmap(self.QLPathCtrlerTran1Dir)
-        self.QLCtrlerTran1Dir.setPixmap(self.QPxmapCtrlerTran1Dir)
-        self.QLCtrlerTran1Dir.setAlignment(QtCore.Qt.AlignCenter)
+        if QFile(self.QLPathCtrlerTran1Dir).exists():
+            self.QLCtrlerTran1Dir = ClickableLabel("")
+            self.QPxmapCtrlerTran1Dir = p2.QtGui.QPixmap(self.QLPathCtrlerTran1Dir)
+            self.QLCtrlerTran1Dir.setPixmap(self.QPxmapCtrlerTran1Dir)
+            self.QLCtrlerTran1Dir.setAlignment(QtCore.Qt.AlignCenter)
+        else:
+            self.QLCtrlerTran1Dir = p2.QtWidgets.QPushButton("Tran1Dir", self)
         self.QLCtrlerTran1Dir.clicked.connect(self.FuncCreateCtrlerTran1Dir)
         self.QGLTab_Rigging.addWidget(self.QLCtrlerTran1Dir,Ls_CtrlerBtnPos[6][0],Ls_CtrlerBtnPos[6][1],p2.QtCore.Qt.AlignTop)
         
         self.QLPathCtrlerGear = self.easyToSee + "images/CtrlerGear.jpg"
-        self.QLCtrlerGear = ClickableLabel("")
-        self.QPxmapCtrlerGear = p2.QtGui.QPixmap(self.QLPathCtrlerGear)
-        self.QLCtrlerGear.setPixmap(self.QPxmapCtrlerGear)
-        self.QLCtrlerGear.setAlignment(QtCore.Qt.AlignCenter)
+        if QFile(self.QLPathCtrlerGear).exists():
+            self.QLCtrlerGear = ClickableLabel("")
+            self.QPxmapCtrlerGear = p2.QtGui.QPixmap(self.QLPathCtrlerGear)
+            self.QLCtrlerGear.setPixmap(self.QPxmapCtrlerGear)
+            self.QLCtrlerGear.setAlignment(QtCore.Qt.AlignCenter)
+        else:
+            self.QLCtrlerGear = p2.QtWidgets.QPushButton("Gear", self)
         self.QLCtrlerGear.clicked.connect(self.FuncCreateCtrlerGear)
         self.QGLTab_Rigging.addWidget(self.QLCtrlerGear,Ls_CtrlerBtnPos[7][0],Ls_CtrlerBtnPos[7][1],p2.QtCore.Qt.AlignTop)
         
         self.QLPathCtrlerTransCube = self.easyToSee + "images/CtrlerTransCube.jpg"
-        self.QLCtrlerTransCube = ClickableLabel("")
-        self.QPxmapCtrlerTransCube = p2.QtGui.QPixmap(self.QLPathCtrlerTransCube)
-        self.QLCtrlerTransCube.setPixmap(self.QPxmapCtrlerTransCube)
-        self.QLCtrlerTransCube.setAlignment(QtCore.Qt.AlignCenter)
+        if QFile(self.QLPathCtrlerTransCube).exists():
+            self.QLCtrlerTransCube = ClickableLabel("")
+            self.QPxmapCtrlerTransCube = p2.QtGui.QPixmap(self.QLPathCtrlerTransCube)
+            self.QLCtrlerTransCube.setPixmap(self.QPxmapCtrlerTransCube)
+            self.QLCtrlerTransCube.setAlignment(QtCore.Qt.AlignCenter)
+        else:
+            self.QLCtrlerTransCube = p2.QtWidgets.QPushButton("TransCube", self)
         self.QLCtrlerTransCube.clicked.connect(self.FuncCreateCtrlerTransCube)
         self.QGLTab_Rigging.addWidget(self.QLCtrlerTransCube,Ls_CtrlerBtnPos[8][0],Ls_CtrlerBtnPos[8][1],p2.QtCore.Qt.AlignTop)
 
