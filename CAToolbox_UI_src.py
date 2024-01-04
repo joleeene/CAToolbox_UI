@@ -9,7 +9,8 @@ from PySide2 import QtGui, QtCore
 from PySide2.QtCore import QFile
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
 from PySide2.QtUiTools import QUiLoader  # Import QUiLoader
-import utils
+import Path
+#import utils
 
 
 def mayaMainWindow():
@@ -21,13 +22,13 @@ class ClickableLabel(p2.QtWidgets.QLabel):
     def mousePressEvent(self, event):
         self.clicked.emit()
 
-class cls_Window(MayaQWidgetDockableMixin, QtWidgets.QDialog):
+class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
     def __init__(self, parent=mayaMainWindow()):
         super(cls_Window, self).__init__(parent)
         #--------------Config. This is mine. You need to change this path to your own.
         self.setWindowTitle("CA2023 Toolbox")
         self.resize(400, 500)
-        ui_file_path = "C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/ui/CAToolbox_UI.ui"
+        ui_file_path = Path.ui_file_path
         ##################################################################################
         ui_loader = QUiLoader()
         ui_file = QFile(ui_file_path)
@@ -115,6 +116,7 @@ class cls_Window(MayaQWidgetDockableMixin, QtWidgets.QDialog):
         self.ui.QPBColorBlue.clicked.connect(self.FuncColorBlue)
 
         self.ui.QPBJointSizeExe.clicked.connect(self.FuncExeJointSize)
+        #self.ui.QPBCreateFKRIng.clicked.connect(self.FuncCreateFKRing)
 
         ###
         self.ui.show()  
@@ -313,9 +315,7 @@ class cls_Window(MayaQWidgetDockableMixin, QtWidgets.QDialog):
         #     add 00 for i+1 C 1~9: maxZero - 00.digits = log10(i+1)
         #     add 0 for i+1 C 10~99:
         MaxZero =  math.floor(math.log10(len(sl_objs)))+1 #if 1, add one 0. if 2, add two.
-        
-        print("vasdadf"+Zero)
-        print(Re_sl_objs)
+
         if IncrementKey in self.ui.QLEWhole.text():
             for i in range(len(sl_objs)):
                 Increment = i+1
@@ -747,6 +747,10 @@ class cls_Window(MayaQWidgetDockableMixin, QtWidgets.QDialog):
         sl_objs = cmds.ls(selection=True)
         for i in range(len(sl_objs)):
             cmds.setAttr(sl_objs[i]+".radius", float(self.ui.QLEJointSize.text()))
+
+    def FuncCreateFKRing(self):
+        
+        pass
 
 if __name__ == '__main__':
     Win_JoleneToolbox = cls_Window()
