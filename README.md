@@ -5,4 +5,4 @@ This script is intended to solve annoying Maya problems. The reason why not a pl
 Python 3.0+ based.
 
 # HOW TO USE THIS
-Git clone this to your storage, open the script in Maya and modify the path.
+Download this to your storage, open the script in Maya and modify the path.
