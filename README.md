@@ -5,4 +5,8 @@ This script is intended to solve annoying Maya problems. The reason why not a pl
 Python 3.0+ based.
 
 # HOW TO USE THIS
-Download this to your storage, open the script in Maya and modify the path.
+Download this to your storage, open the script in Maya but before you run it,
+modify the ui_file_path in Path.py first. Let it point to the .ui file in your directory.
+
+# HOW TO UPDATE
+Just copy everything in CAToolbox_UI_src.py and paste in your local file.
