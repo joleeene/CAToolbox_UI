@@ -9,5 +9,8 @@ Download this to your storage, open the script in Maya but before you run it,
 modify the ui_file_path in Path.py first. Let it point to the .ui file in your directory.
 
 # HOW TO UPDATE
-Just copy everything in CAToolbox_UI_src.py and paste in your local file.
+~~Just copy everything in CAToolbox_UI_src.py and paste in your local file.~~ I fail on rectifying pathing..
+Copy everything below the line of "file_path"(So you don't need to change the path everytime updating).
+
+
 And replace the .ui file.
