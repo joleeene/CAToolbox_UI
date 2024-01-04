@@ -9,7 +9,9 @@ from PySide2 import QtGui, QtCore
 from PySide2.QtCore import QFile
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
 from PySide2.QtUiTools import QUiLoader  # Import QUiLoader
-import Path
+import sys
+#sys.path.append(r"C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI")
+#from Path import ui_file_path
 #import utils
 
 
@@ -28,10 +30,10 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         #--------------Config. This is mine. You need to change this path to your own.
         self.setWindowTitle("CA2023 Toolbox")
         self.resize(400, 500)
-        ui_file_path = Path.ui_file_path
+        file_path = "C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/ui/CAToolbox_UI.ui"
         ##################################################################################
         ui_loader = QUiLoader()
-        ui_file = QFile(ui_file_path)
+        ui_file = QFile(file_path)
         self.ui = ui_loader.load(ui_file)
         ########################################## Must do or else it's a seperated window.
         layout = p2.QtWidgets.QVBoxLayout(self)
@@ -52,29 +54,6 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         #Tab_Naming
 
         #Tab_Rigging
-        TargColumnNum = 4
-        Dic_CtrlerBtnInit = {#use number to indicate they belong to different groups .
-            "CtrlerCube" :      ["GroupCtrler",0,0],
-            "CtrlerSphere" :    ["GroupCtrler",0,0],
-            "CtrlPrism" :       ["GroupCtrler",0,0],
-            "CtrlRing" :        ["GroupCtrler",0,0],
-            "CtrlRotPike" :     ["GroupCtrler",0,0],
-            "CtrlerRot1Dir" :   ["GroupCtrler",0,0],
-            "CtrlerTran1Dir" :  ["CtrlerTran1Dir",0,0],
-            "CtrlerGear" :  ["CtrlerGear",0,0],
-            "CtrlerTransCube" :  ["CtrlerTransCube",0,0]
-
-            }
-        Dic_ChangeColorBtnInit = {
-            "QPBColorReturn" :  ["GroupChangeColor",0,0],
-            "QPBColorYellow" :  ["GroupChangeColor",0,0],
-            "QPBColorRed" :     ["GroupChangeColor",0,0],
-            "QPBColorBlue" :    ["GroupChangeColor",0,0]}
-        Dic_JointSizeBtnInit = {
-            "QLJointSize" :     ["Joint Size",0,0],
-            "QLEJointSize" :    ["Joint Size",0,0],
-            "QPBJointSizeExe" : ["Joint Size",0,0]}
-
 
         #Tab_Animation
 
@@ -116,7 +95,7 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         self.ui.QPBColorBlue.clicked.connect(self.FuncColorBlue)
 
         self.ui.QPBJointSizeExe.clicked.connect(self.FuncExeJointSize)
-        #self.ui.QPBCreateFKRIng.clicked.connect(self.FuncCreateFKRing)
+        self.ui.QPBCreateFKRing.clicked.connect(self.FuncCreateFKRing)
 
         ###
         self.ui.show()  
@@ -749,8 +728,39 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
             cmds.setAttr(sl_objs[i]+".radius", float(self.ui.QLEJointSize.text()))
 
     def FuncCreateFKRing(self):
-        
-        pass
+        #Simple ver FK Ring
+        Ls_Ctl = []
+        def subFuncCreateFKRing(Arg_t, Arg_ro, Arg_s, Arg_name):
+            VertexAmount = 36
+            VertexPos = (0,0,0); RingPathing = []
+            for i in range(VertexAmount):
+                recAngle = math.radians((i/VertexAmount)*360)
+                VertexPos = (math.cos(recAngle), 0, math.sin(recAngle))
+                RingPathing.append(VertexPos)
+            RingPathing.append(RingPathing[0])
+            Incoming_Name = Arg_name + "_Ctl"
+            a = cmds.curve(d=1, p=RingPathing, name = Incoming_Name)
+            cmds.xform(a, t=Arg_t ,ro=Arg_ro, s=Arg_s, worldSpace=True)
+            Ls_Ctl.append(Incoming_Name)
+            return a
+
+        Ls_sl_objs = cmds.ls(sl=True)
+
+        #Create FK Ring
+        for ord in range(len(Ls_sl_objs)):
+            sl_obj_wm = cmds.xform(Ls_sl_objs[ord], query=True, matrix=True, worldSpace=True)
+            sl_obj_t = [sl_obj_wm[12], sl_obj_wm[13], sl_obj_wm[14]]
+            sl_obj_ro = cmds.xform(Ls_sl_objs[ord], query=True, rotation=True, worldSpace=True)
+            sl_obj_s = cmds.xform(Ls_sl_objs[ord], query=True, scale=True, worldSpace=True)
+            a = subFuncCreateFKRing(sl_obj_t, sl_obj_ro, sl_obj_s, Ls_sl_objs[ord])
+        for ord in range(len(Ls_Ctl)):
+            if ord+2 <= len(Ls_Ctl):
+                cmds.parent(Ls_Ctl[-(ord+1)], Ls_Ctl[-(ord+2)])
+            else:
+                continue
+
+
+
 
 if __name__ == '__main__':
     Win_JoleneToolbox = cls_Window()
