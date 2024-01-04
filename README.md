@@ -10,3 +10,4 @@ modify the ui_file_path in Path.py first. Let it point to the .ui file in your d
 
 # HOW TO UPDATE
 Just copy everything in CAToolbox_UI_src.py and paste in your local file.
+And replace the .ui file.
