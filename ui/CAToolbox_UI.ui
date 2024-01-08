@@ -49,6 +49,9 @@
           </property>
           <item row="0" column="0">
            <widget class="QPushButton" name="QPBGetChildNodes">
+            <property name="toolTip">
+             <string>Select all children of selected objects.</string>
+            </property>
             <property name="text">
              <string>GetChildNodes</string>
             </property>
@@ -268,6 +271,9 @@
                 <height>36</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>FK</string>
+              </property>
               <property name="icon">
                <iconset>
                 <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerRing.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerRing.jpg</iconset>
@@ -287,6 +293,9 @@
                 <width>36</width>
                 <height>36</height>
                </size>
+              </property>
+              <property name="toolTip">
+               <string>Used for controls that move the pole vector of an IK solver</string>
               </property>
               <property name="icon">
                <iconset>
@@ -308,6 +317,10 @@
                 <height>36</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>Used for controls that can be translated and rotated on at least 2
+axes</string>
+              </property>
               <property name="icon">
                <iconset>
                 <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerSphere.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerSphere.jpg</iconset>
@@ -327,6 +340,9 @@
                 <width>36</width>
                 <height>36</height>
                </size>
+              </property>
+              <property name="toolTip">
+               <string>Used for controls that can only translate on at least 2 axes</string>
               </property>
               <property name="text">
                <string/>
@@ -351,6 +367,9 @@
                 <height>36</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>Used for controls that rotate only in one direction</string>
+              </property>
               <property name="icon">
                <iconset>
                 <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerRot1Dir.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerRot1Dir.jpg</iconset>
@@ -370,6 +389,9 @@
                 <width>36</width>
                 <height>36</height>
                </size>
+              </property>
+              <property name="toolTip">
+               <string>Used for controls that translate only in one direction</string>
               </property>
               <property name="icon">
                <iconset>
@@ -391,6 +413,10 @@
                 <height>36</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>Used for controls that hold settings attributes like IK/FK, visibility, or
+space switching</string>
+              </property>
               <property name="icon">
                <iconset>
                 <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerGear.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerGear.jpg</iconset>
@@ -411,6 +437,9 @@
                 <height>36</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>Example of a translate box “T” style control</string>
+              </property>
               <property name="icon">
                <iconset>
                 <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerTransCube.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerTransCube.jpg</iconset>
@@ -430,6 +459,9 @@
                 <width>36</width>
                 <height>36</height>
                </size>
+              </property>
+              <property name="toolTip">
+               <string>Used for controls that can only rotate on at least 2 axes</string>
               </property>
               <property name="icon">
                <iconset>
@@ -521,6 +553,9 @@
            <layout class="QGridLayout" name="gridLayout_5">
             <item row="0" column="0">
              <widget class="QLabel" name="QLJointSize">
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select Joints and input a num,&lt;/p&gt;&lt;p&gt;then change their joint size.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="text">
                <string>JointSize</string>
               </property>
@@ -553,54 +588,70 @@
           </item>
          </layout>
         </widget>
-        <widget class="QLabel" name="label">
+        <widget class="QWidget" name="horizontalLayoutWidget">
          <property name="geometry">
           <rect>
-           <x>100</x>
-           <y>350</y>
-           <width>121</width>
-           <height>71</height>
+           <x>10</x>
+           <y>330</y>
+           <width>341</width>
+           <height>81</height>
           </rect>
          </property>
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-        <widget class="QToolButton" name="toolButton">
-         <property name="geometry">
-          <rect>
-           <x>210</x>
-           <y>350</y>
-           <width>23</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>...</string>
-         </property>
-        </widget>
-        <widget class="QToolButton" name="toolButton_2">
-         <property name="geometry">
-          <rect>
-           <x>260</x>
-           <y>370</y>
-           <width>23</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>...</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerCube.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerCube.jpg</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
-         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <widget class="QPushButton" name="QPBCreateFKRing">
+              <property name="toolTip">
+               <string>Create FK Ring Ctrlers for selected objects</string>
+              </property>
+              <property name="text">
+               <string>FK Ring</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="1">
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="3">
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </widget>
        <widget class="QWidget" name="Tab_Animation">
