@@ -276,7 +276,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerRing.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerRing.jpg</iconset>
+                <normaloff>../images/CtrlerRing.jpg</normaloff>../images/CtrlerRing.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -299,7 +299,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerPrism.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerPrism.jpg</iconset>
+                <normaloff>../images/CtrlerPrism.jpg</normaloff>../images/CtrlerPrism.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -323,7 +323,7 @@ axes</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerSphere.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerSphere.jpg</iconset>
+                <normaloff>../images/CtrlerSphere.jpg</normaloff>../images/CtrlerSphere.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -349,7 +349,7 @@ axes</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerCube.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerCube.jpg</iconset>
+                <normaloff>../images/CtrlerCube.jpg</normaloff>../images/CtrlerCube.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -372,7 +372,7 @@ axes</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerRot1Dir.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerRot1Dir.jpg</iconset>
+                <normaloff>../images/CtrlerRot1Dir.jpg</normaloff>../images/CtrlerRot1Dir.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -395,7 +395,7 @@ axes</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerTran1Dir.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerTran1Dir.jpg</iconset>
+                <normaloff>../images/CtrlerTran1Dir.jpg</normaloff>../images/CtrlerTran1Dir.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -419,7 +419,7 @@ space switching</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerGear.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerGear.jpg</iconset>
+                <normaloff>../images/CtrlerGear.jpg</normaloff>../images/CtrlerGear.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -442,7 +442,7 @@ space switching</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerTransCube.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerTransCube.jpg</iconset>
+                <normaloff>../images/CtrlerTransCube.jpg</normaloff>../images/CtrlerTransCube.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -465,7 +465,7 @@ space switching</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerRotPike.jpg</normaloff>F:/QT_Projects/QT_Train_grp/untitled2/images/CtrlerRotPike.jpg</iconset>
+                <normaloff>../images/CtrlerRotPike.jpg</normaloff>../images/CtrlerRotPike.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
