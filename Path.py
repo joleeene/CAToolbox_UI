@@ -1,1 +1,0 @@
-ui_file_path = "C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/ui/CAToolbox_UI.ui"
