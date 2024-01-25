@@ -276,7 +276,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerRing.jpg</normaloff>../images/CtrlerRing.jpg</iconset>
+                <normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerRing.jpg</normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerRing.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -299,7 +299,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerPrism.jpg</normaloff>../images/CtrlerPrism.jpg</iconset>
+                <normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerPrism.jpg</normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerPrism.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -323,7 +323,7 @@ axes</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerSphere.jpg</normaloff>../images/CtrlerSphere.jpg</iconset>
+                <normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerSphere.jpg</normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerSphere.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -349,7 +349,7 @@ axes</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerCube.jpg</normaloff>../images/CtrlerCube.jpg</iconset>
+                <normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerCube.jpg</normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerCube.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -372,7 +372,7 @@ axes</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerRot1Dir.jpg</normaloff>../images/CtrlerRot1Dir.jpg</iconset>
+                <normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerRot1Dir.jpg</normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerRot1Dir.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -395,7 +395,7 @@ axes</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerTran1Dir.jpg</normaloff>../images/CtrlerTran1Dir.jpg</iconset>
+                <normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerTran1Dir.jpg</normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerTran1Dir.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -419,7 +419,7 @@ space switching</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerGear.jpg</normaloff>../images/CtrlerGear.jpg</iconset>
+                <normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerGear.jpg</normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerGear.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -442,7 +442,7 @@ space switching</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerTransCube.jpg</normaloff>../images/CtrlerTransCube.jpg</iconset>
+                <normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerTransCube.jpg</normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerTransCube.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -465,7 +465,7 @@ space switching</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerRotPike.jpg</normaloff>../images/CtrlerRotPike.jpg</iconset>
+                <normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerRotPike.jpg</normaloff>C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/images/CtrlerRotPike.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -600,16 +600,6 @@ space switching</string>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <layout class="QGridLayout" name="gridLayout_3">
-            <item row="0" column="0">
-             <widget class="QPushButton" name="QPBCreateFKRing">
-              <property name="toolTip">
-               <string>Create FK Ring Ctrlers for selected objects</string>
-              </property>
-              <property name="text">
-               <string>FK Ring</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="2">
              <spacer name="horizontalSpacer_3">
               <property name="orientation">
@@ -623,18 +613,15 @@ space switching</string>
               </property>
              </spacer>
             </item>
-            <item row="0" column="1">
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="QPBCreateFKRing">
+              <property name="toolTip">
+               <string>Create FK Ring Ctrlers for selected objects</string>
               </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
+              <property name="text">
+               <string>FK Ring</string>
               </property>
-             </spacer>
+             </widget>
             </item>
             <item row="0" column="3">
              <spacer name="horizontalSpacer_4">
@@ -648,6 +635,13 @@ space switching</string>
                </size>
               </property>
              </spacer>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="QPBCreateIK">
+              <property name="text">
+               <string>CreateIK</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
