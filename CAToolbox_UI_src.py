@@ -8,8 +8,6 @@ from PySide2 import QtGui, QtCore
 from PySide2.QtCore import QFile
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
 from PySide2.QtUiTools import QUiLoader  # Import QUiLoader
-import sys
-sys.path.append(r"C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI")
 import importlib
 #Utils files import
 import utils
@@ -17,6 +15,8 @@ from utils.utilsTest import *
 from utils.createCtrler import *
 from utils.modCtrlerColor import *
 from utils.CreateIK import *
+def PathRectifier(Input_Str):
+    return Input_Str.replace("\\", "/")
 
 def mayaMainWindow():
     mainWindowPointer = omui.MQtUtil.mainWindow()
@@ -33,7 +33,8 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         #--------------Config. This is mine. You need to change this path to your own.
         self.setWindowTitle("CA2023 Toolbox")
         self.resize(400, 500)
-        file_path = "C:/Users/JoleneLinxy/OneDrive/OrganizeFilesStructure/08_Environment/Config/Maya/script/CAToolbox_UI/ui/CAToolbox_UI.ui"
+        path = r"C:\Users\JoleneLinxy\OneDrive\OrganizeFilesStructure\08_Environment\Config\Maya\script\CAToolbox_UI\ui\CAToolbox_UI.ui"
+        file_path = PathRectifier(path)
         ##################################################################################
         ui_loader = QUiLoader()
         ui_file = QFile(file_path)
@@ -45,6 +46,14 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
 
         ### Public var 
         #Tab_General
+        self.attrArray = [
+            ".translateX",
+            ".translateY",
+            ".translateZ",
+            ".rotateX",
+            ".rotateY",
+            ".rotateZ"
+        ]
         ###
 
         ###Connection
@@ -74,6 +83,7 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         self.ui.QPBCtrlerTran1Dir.clicked.connect(createCtrler_Tran1Dir)
         self.ui.QPBCtrlerGear.clicked.connect(createCtrler_Gear)
         self.ui.QPBCtrlerTransCube.clicked.connect(createCtrler_TransCube)
+        self.ui.QPBCtrler4DirCirc.clicked.connect(createCtrler_4DirCirc)
 
         self.ui.QPBColorReturn.clicked.connect(modCtrlerColor_ReturnColor)
         self.ui.QPBColorYellow.clicked.connect(modCtrlerColor_TurnYellow)
@@ -81,8 +91,11 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         self.ui.QPBColorBlue.clicked.connect(modCtrlerColor_TurnBlue)
 
         self.ui.QPBJointSizeExe.clicked.connect(self.FuncExeJointSize)
+
         self.ui.QPBCreateFKRing.clicked.connect(self.FuncCreateFKRing)
         self.ui.QPBCreateIK.clicked.connect(self.createIK_CreateIK)
+        self.ui.QPBCreateLoc.clicked.connect(self.FuncCreateLoc)
+        self.ui.QPBGetCrvVtxPList.clicked.connect(self.FuncGetCrvVtxPList)
 
         ###
         self.ui.show()  
@@ -507,8 +520,37 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
 
         cmds.connectAttr(ConditionNode_name+".outColorR", Ls_IKJnt[1]+".translateY")
         cmds.connectAttr(ConditionNode_name+".outColorG", Ls_IKJnt[2]+".translateY")
-    op()
 
+    def FuncCreateLoc(self):
+        a = cmds.exactWorldBoundingBox()
+        cx = (a[0]+a[3])*0.5
+        cy = (a[1]+a[4])*0.5
+        cz = (a[2]+a[5])*0.5
+        loc = cmds.spaceLocator()
+        cmds.xform(loc, t=(cx,cy,cz))
+
+    def FuncGetCrvVtxPList(self):
+        def get_curve_vertex_positions():
+            sl_crv = cmds.ls(selection=True)
+            #Return Only the first selected crv object.
+            if not sl_crv:
+                print("Please select a nurbsCurve.")
+                return
+
+            A_VertexPos = []
+            I_Vertex = cmds.getAttr(sl_crv[0] + '.spans') + cmds.getAttr(sl_crv[0] + '.degree')
+            
+            for i in range(I_Vertex):
+                V3_VertexPos = cmds.pointPosition(sl_crv[0] + '.cv[' + str(i) + ']', world=True)
+                A_VertexPos.append(V3_VertexPos)
+
+            return A_VertexPos
+
+        curve_vertex_positions = get_curve_vertex_positions()
+        #print every vertexPos per line, thus increasing readablity.
+        for i in curve_vertex_positions:
+            print(i)
+ 
 if __name__ == '__main__':
     Win_JoleneToolbox = cls_Window()
     Win_JoleneToolbox.show(dockable=True)
