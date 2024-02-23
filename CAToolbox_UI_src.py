@@ -8,6 +8,13 @@ from PySide2 import QtGui, QtCore
 from PySide2.QtCore import QFile
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
 from PySide2.QtUiTools import QUiLoader  # Import QUiLoader
+
+path = r"C:\Users\JoleneLinxy\OneDrive\OrganizeFilesStructure\08_Environment\Config\Maya\script\CAToolbox_UI"
+def PathRectifier(Input_Str):
+    return Input_Str.replace("\\", "/")
+rec_path = PathRectifier(path)
+import sys
+sys.path.append(rec_path)
 import importlib
 #Utils files import
 import utils
@@ -15,8 +22,8 @@ from utils.utilsTest import *
 from utils.createCtrler import *
 from utils.modCtrlerColor import *
 from utils.CreateIK import *
-def PathRectifier(Input_Str):
-    return Input_Str.replace("\\", "/")
+
+
 
 def mayaMainWindow():
     mainWindowPointer = omui.MQtUtil.mainWindow()
@@ -33,8 +40,8 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         #--------------Config. This is mine. You need to change this path to your own.
         self.setWindowTitle("CA2023 Toolbox")
         self.resize(400, 500)
-        path = r"C:\Users\JoleneLinxy\OneDrive\OrganizeFilesStructure\08_Environment\Config\Maya\script\CAToolbox_UI\ui\CAToolbox_UI.ui"
-        file_path = PathRectifier(path)
+        
+        file_path = rec_path+"/ui/CAToolbox_UI.ui"
         ##################################################################################
         ui_loader = QUiLoader()
         ui_file = QFile(file_path)
