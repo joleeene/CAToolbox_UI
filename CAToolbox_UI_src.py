@@ -2,6 +2,7 @@
 import math, copy, re
 import PySide2 as p2
 import maya.OpenMayaUI as omui
+import maya.OpenMaya as om
 import shiboken2
 import maya.cmds as cmds
 from PySide2 import QtGui, QtCore
@@ -39,7 +40,7 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         super(cls_Window, self).__init__(parent)
         #--------------Config. This is mine. You need to change this path to your own.
         self.setWindowTitle("CA2023 Toolbox")
-        self.resize(400, 500)
+        self.resize(400, 550)
         
         file_path = rec_path+"/ui/CAToolbox_UI.ui"
         ##################################################################################
@@ -103,6 +104,11 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         self.ui.QPBCreateIK.clicked.connect(self.createIK_CreateIK)
         self.ui.QPBCreateLoc.clicked.connect(self.FuncCreateLoc)
         self.ui.QPBGetCrvVtxPList.clicked.connect(self.FuncGetCrvVtxPList)
+        self.ui.QPBCVsoftCluster.clicked.connect(self.FuncCreate_CVsoftCluster)
+        
+        self.ui.QPBJointChain.clicked.connect(self.FuncCreate_JointChain)
+
+
 
         ###
         self.ui.show()  
@@ -187,7 +193,7 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
             original_parent_pool.append(cmds.listRelatives(sl_objs[i], parent=True))
         # Create a null object with the same world transform
         for i in range(len(sl_objs)):
-            null_object = cmds.group(empty=True, name=sl_objs[i]+"Garbage")
+            null_object = cmds.group(empty=True, name=sl_objs[i]+"_Off")
             cmds.xform(null_object, worldSpace=True, matrix = world_transform_pool[i])
             # Parent the original object under the null object
             cmds.parent(sl_objs[i], null_object)
@@ -558,6 +564,76 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         for i in curve_vertex_positions:
             print(i)
  
+    def FuncCreate_CVsoftCluster(self):
+        def softSelection():
+            selection = om.MSelectionList()
+            softSelection = om.MRichSelection()
+            om.MGlobal.getRichSelection(softSelection)
+            softSelection.getSelection(selection)
+            
+            dagPath = om.MDagPath()
+            component = om.MObject()
+            
+            iter = om.MItSelectionList( selection,om.MFn.kCurveCVComponent )
+            elements = []
+            while not iter.isDone(): 
+                iter.getDagPath( dagPath, component )
+                dagPath.pop()
+                node = dagPath.fullPathName()
+                fnComp = om.MFnSingleIndexedComponent(component)   
+                        
+                for i in range(fnComp.elementCount()):
+                    elements.append([node, fnComp.element(i), fnComp.weight(i).influence()] )
+                iter.next()
+            return elements
+
+        def createSoftCluster():
+            softElementData = softSelection()
+            selection = ["%s.cv[%d]" % (el[0], el[1])for el in softElementData ] 
+            
+            cmds.select(selection, r=True)
+            cluster = cmds.cluster(relative=False)
+            
+            for i in range(len(softElementData)):
+                cmds.percent(cluster[0], selection[i], v=softElementData[i][2])
+            cmds.select(cluster[1], r=True)
+            
+        createSoftCluster()
+
+    def FuncCreate_JointChain(self):
+        count = self.ui.QLEJointChain.text()  # Amount of joints to create.
+        count = int(count)
+        if count<3:
+            print("Input must be larger than 3")
+            return
+        a = cmds.ls(sl=1)
+        start = a[0]  # Change to object to start from.
+        end = a[1]  # Chagne to object to end to.
+
+        steps = 1.0 / (count - 1)  # Will use count to calculate how much it should increase percentage by each iteration. Need to do -1 so the joints reach both start and end points.
+        perc = 0  # This will always go between a range of 0.0 - 1.0, and we'll use this in the constraint's weights.
+        Zero = "0"
+        MaxZero = math.floor(math.log10(count))+1
+        ls=[]
+        for i in range(count):
+            jnt = cmds.createNode("joint")  # Create a new joint.
+            Increment=i+1
+            ZeroDigits=MaxZero-math.floor(math.log10(Increment))
+            Zero_Apply=""
+            for j in range(ZeroDigits):
+                Zero_Apply = Zero_Apply + Zero
+            recIncrement = Zero_Apply + str(Increment)
+            newname = "Bendy" + recIncrement
+            cmds.rename(jnt, newname)
+            #cmds.setAttr(jnt + ".displayLocalAxis", False)  # Display its orientation.
+            ls.append(newname)
+            constraint = cmds.parentConstraint(start, newname, weight=1.0 - perc)[0]  # Apply 1st constraint, with inverse of current percentage.
+            cmds.parentConstraint(end, newname, weight=perc)  # Apply 2nd constraint, with current percentage as-is.
+            cmds.delete(constraint)  # Don't need this anymore.
+            perc += steps  # Increase percentage for next iteration.
+        ls.reverse()
+        for i in range(count-1):
+            cmds.parent(ls[i], ls[i+1])
 if __name__ == '__main__':
     Win_JoleneToolbox = cls_Window()
     Win_JoleneToolbox.show(dockable=True)
