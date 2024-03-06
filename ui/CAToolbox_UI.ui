@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>387</width>
-    <height>517</height>
+    <height>566</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -600,27 +600,13 @@ space switching</string>
           <rect>
            <x>10</x>
            <y>330</y>
-           <width>348</width>
+           <width>352</width>
            <height>81</height>
           </rect>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <layout class="QGridLayout" name="gridLayout_3">
-            <item row="0" column="1">
-             <widget class="QPushButton" name="QPBCreateIK">
-              <property name="text">
-               <string>CreateIK</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="QPBGetCrvVtxPList">
-              <property name="text">
-               <string>GetCrvVtxPList</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <widget class="QPushButton" name="QPBCreateFKRing">
               <property name="toolTip">
@@ -637,6 +623,83 @@ space switching</string>
                <string>CreateLoc</string>
               </property>
              </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="QPBCreateIK">
+              <property name="text">
+               <string>CreateIK</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="QPBGetCrvVtxPList">
+              <property name="text">
+               <string>GetCrvVtxPList</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="QPBCVsoftCluster">
+              <property name="toolTip">
+               <string>Works for IK Spline Crv, soft selection cluster</string>
+              </property>
+              <property name="text">
+               <string>CV soft cluster</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="horizontalLayoutWidget_4">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>410</y>
+           <width>341</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="0">
+             <widget class="QLabel" name="QLJointChain">
+              <property name="toolTip">
+               <string>Select 2 objects and create some joints as a chain between them</string>
+              </property>
+              <property name="text">
+               <string>jointChain</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="QLEJointChain">
+              <property name="toolTip">
+               <string>Input how many joints u wanna create.</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="QPBJointChain">
+              <property name="text">
+               <string>Exe</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </item>
