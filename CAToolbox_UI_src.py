@@ -1,24 +1,27 @@
 #General Import
 import math, copy, re
-import PySide2 as p2
+#import PySide2 as p2
+import PySide6 as p6
 import maya.OpenMayaUI as omui
 import maya.OpenMaya as om
-import shiboken2
+#import shiboken2
+import shiboken6
 import maya.cmds as cmds
-from PySide2 import QtGui, QtCore
-from PySide2.QtCore import QFile
+from PySide6 import QtGui, QtCore
+from PySide6.QtCore import QFile
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
-from PySide2.QtUiTools import QUiLoader  # Import QUiLoader
+from PySide6.QtUiTools import QUiLoader
 
-path = r"C:\Users\JoleneLinxy\OneDrive\OrganizeFilesStructure\08_Environment\Config\Maya\script\CAToolbox_UI"
+path = r"C:\Users\linxy\OneDrive\OrganizeFilesStructure\08_Environment\Config\Maya\script\CAToolbox_UI"
 def PathRectifier(Input_Str):
     return Input_Str.replace("\\", "/")
 rec_path = PathRectifier(path)
+
 import sys
 sys.path.append(rec_path)
 import importlib
 #Utils files import
-import utils
+
 from utils.utilsTest import *
 from utils.createCtrler import *
 from utils.modCtrlerColor import *
@@ -28,14 +31,14 @@ from utils.CreateIK import *
 
 def mayaMainWindow():
     mainWindowPointer = omui.MQtUtil.mainWindow()
-    return shiboken2.wrapInstance(int(mainWindowPointer), p2.QtWidgets.QWidget)
+    return shiboken6.wrapInstance(int(mainWindowPointer), p6.QtWidgets.QWidget)
 
-class ClickableLabel(p2.QtWidgets.QLabel):
+class ClickableLabel(p6.QtWidgets.QLabel):
     clicked = QtCore.Signal()
     def mousePressEvent(self, event):
         self.clicked.emit()
 
-class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
+class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
     def __init__(self, parent=mayaMainWindow()):
         super(cls_Window, self).__init__(parent)
         #--------------Config. This is mine. You need to change this path to your own.
@@ -48,7 +51,7 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         ui_file = QFile(file_path)
         self.ui = ui_loader.load(ui_file)
         ########################################## Must do or else it's a seperated window.
-        layout = p2.QtWidgets.QVBoxLayout(self)
+        layout = p6.QtWidgets.QVBoxLayout(self)
         layout.addWidget(self.ui)
         ##################################################################################
 
@@ -74,6 +77,12 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
             # self.ui.QPBGetMatrix.clicked.connect(utils.Tab_General.FuncGetMatrix)
             # self.ui.QPBSetMatrix.clicked.connect(utils.Tab_General.FuncSetMatrix)
         self.ui.QPBCreateGarbage.clicked.connect(self.FuncCreateGarbage)
+        self.ui.QPBCreateChildJoint.clicked.connect(self.FuncCreateChildJoint)
+
+        self.ui.QPBOutlinerColorReturn.clicked.connect(self.FuncOutlinerColorReturn)
+        self.ui.QPBOutlinerColorRed.clicked.connect(self.FuncOutlinerColorRed)
+        self.ui.QPBOutlinerColorCyan.clicked.connect(self.FuncOutlinerColorCyan)
+        self.ui.QPBOutlinerColorGreen.clicked.connect(self.FuncOutlinerColorGreen)
 
         #Tab_Naming
         self.ui.QPBPrefixExe.clicked.connect(self.FuncExePrefix)
@@ -97,14 +106,19 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         self.ui.QPBColorYellow.clicked.connect(modCtrlerColor_TurnYellow)
         self.ui.QPBColorRed.clicked.connect(modCtrlerColor_TurnRed)
         self.ui.QPBColorBlue.clicked.connect(modCtrlerColor_TurnBlue)
+        self.ui.QPBColorPurple.clicked.connect(modCtrlerColor_TurnPurple)
+        self.ui.QPBColorPink.clicked.connect(modCtrlerColor_TurnPink)
+        self.ui.QPBColorSkin.clicked.connect(modCtrlerColor_TurnSkin)
+        self.ui.QPBColorCyan.clicked.connect(modCtrlerColor_TurnCyan)
 
         self.ui.QPBJointSizeExe.clicked.connect(self.FuncExeJointSize)
 
         self.ui.QPBCreateFKRing.clicked.connect(self.FuncCreateFKRing)
-        self.ui.QPBCreateIK.clicked.connect(self.createIK_CreateIK)
+        self.ui.QPBCreateIKRevFoot.clicked.connect(self.createIK_CreateIKRevFoot)
         self.ui.QPBCreateLoc.clicked.connect(self.FuncCreateLoc)
         self.ui.QPBGetCrvVtxPList.clicked.connect(self.FuncGetCrvVtxPList)
         self.ui.QPBCVsoftCluster.clicked.connect(self.FuncCreate_CVsoftCluster)
+        self.ui.QPBCreateIKFKSwitch.clicked.connect(self.FuncCreate_IKFKSwitch)
         
         self.ui.QPBJointChain.clicked.connect(self.FuncCreate_JointChain)
 
@@ -115,9 +129,26 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
     ###Func
     def test(self):
         print("VVVVVVVV")
+    def RealRestTransform(self, input_obj):
+        attrArray = [
+            "translateX",
+            "translateY",
+            "translateZ",
+            "rotateX",
+            "rotateY",
+            "rotateZ"
+            ]
+        for j in range(len(attrArray)):
+                BLattrLocked = cmds.getAttr(input_obj + "." + attrArray[j], lock=True)
+                if BLattrLocked:
+                    continue
+                else:
+                    cmds.setAttr(input_obj + "." + attrArray[j],0) 
+
     #Tab_General
     def FuncTest(self):
         selected_nodes = cmds.ls(selection=True, long=False)
+        print("length=", len(selected_nodes))
         print(selected_nodes)
 
     def FuncGetChildNodes(self):
@@ -192,14 +223,60 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         for i in range(len(sl_objs)):
             original_parent_pool.append(cmds.listRelatives(sl_objs[i], parent=True))
         # Create a null object with the same world transform
+        ls_null_obj = []
         for i in range(len(sl_objs)):
-            null_object = cmds.group(empty=True, name=sl_objs[i]+"_Off")
-            cmds.xform(null_object, worldSpace=True, matrix = world_transform_pool[i])
+            nul_obj = cmds.group(empty=True, name=sl_objs[i]+"_Off")
+            cmds.xform(nul_obj, worldSpace=True, matrix = world_transform_pool[i])
             # Parent the original object under the null object
-            cmds.parent(sl_objs[i], null_object)
+            cmds.parent(sl_objs[i], nul_obj)
         # Reparent the original object to its original parent
             if original_parent_pool[i]:
-                cmds.parent(null_object, original_parent_pool[i])
+                cmds.parent(nul_obj, original_parent_pool[i])
+            ls_null_obj.append(nul_obj)
+        cmds.select(cl=1)
+        cmds.select(ls_null_obj, add=1)
+
+    def FuncCreateChildJoint(self):
+        sl_objs = cmds.ls(selection=True)
+        for i in range(len(sl_objs)):
+            iter_newname = sl_objs[i] + "_Jx"
+            iter_joint = cmds.createNode("joint", n=iter_newname)
+            cmds.parent(iter_joint, sl_objs[i])
+            self.RealRestTransform(iter_joint)
+        
+    def FuncOutlinerColorReturn(self):
+        ls_obj = cmds.ls(sl=1)
+        for i in range(len(ls_obj)):
+            iter_attr0 = ls_obj[i]+".useOutlinerColor"
+            iter_attr1 = ls_obj[i]+".outlinerColor"
+            cmds.setAttr(iter_attr0, 0)
+            cmds.setAttr(iter_attr1, 0,0,0)
+
+    def FuncOutlinerColorRed(self):
+        ls_obj = cmds.ls(sl=1)
+        for i in range(len(ls_obj)):
+            iter_attr0 = ls_obj[i]+".useOutlinerColor"
+            iter_attr1 = ls_obj[i]+".outlinerColor"
+            cmds.setAttr(iter_attr0, 1)
+            cmds.setAttr(iter_attr1, 1, 0.3, 0.3)
+
+    def FuncOutlinerColorCyan(self):
+        ls_obj = cmds.ls(sl=1)
+        for i in range(len(ls_obj)):
+            iter_attr0 = ls_obj[i]+".useOutlinerColor"
+            iter_attr1 = ls_obj[i]+".outlinerColor"
+            cmds.setAttr(iter_attr0, 1)
+            cmds.setAttr(iter_attr1, 0,1,1)
+
+    def FuncOutlinerColorGreen(self):
+        ls_obj = cmds.ls(sl=1)
+        for i in range(len(ls_obj)):
+            iter_attr0 = ls_obj[i]+".useOutlinerColor"
+            iter_attr1 = ls_obj[i]+".outlinerColor"
+            cmds.setAttr(iter_attr0, 1)
+            cmds.setAttr(iter_attr1, 0,1,0)
+
+
 
     #Tab_Naming
 
@@ -338,36 +415,42 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
             cmds.setAttr(sl_objs[i]+".radius", float(self.ui.QLEJointSize.text()))
 
     def FuncCreateFKRing(self):
-        #Simple ver FK Ring
-        Ls_Ctl = []
-        def subFuncCreateFKRing(Arg_t, Arg_ro, Arg_s, Arg_name):
-            VertexAmount = 36
-            VertexPos = (0,0,0); RingPathing = []
-            for i in range(VertexAmount):
-                recAngle = math.radians((i/VertexAmount)*360)
-                VertexPos = (math.cos(recAngle), 0, math.sin(recAngle))
-                RingPathing.append(VertexPos)
-            RingPathing.append(RingPathing[0])
-            Incoming_Name = Arg_name + "_Ctl"
-            a = cmds.curve(d=1, p=RingPathing, name = Incoming_Name)
-            cmds.xform(a, t=Arg_t ,ro=Arg_ro, s=Arg_s, worldSpace=True)
-            Ls_Ctl.append(Incoming_Name)
-            return a
-
-        Ls_sl_objs = cmds.ls(sl=True)
-
-        #Create FK Ring
-        for ord in range(len(Ls_sl_objs)):
-            sl_obj_wm = cmds.xform(Ls_sl_objs[ord], query=True, matrix=True, worldSpace=True)
-            sl_obj_t = [sl_obj_wm[12], sl_obj_wm[13], sl_obj_wm[14]]
-            sl_obj_ro = cmds.xform(Ls_sl_objs[ord], query=True, rotation=True, worldSpace=True)
-            sl_obj_s = cmds.xform(Ls_sl_objs[ord], query=True, scale=True, worldSpace=True)
-            a = subFuncCreateFKRing(sl_obj_t, sl_obj_ro, sl_obj_s, Ls_sl_objs[ord])
-        for ord in range(len(Ls_Ctl)):
-            if ord+2 <= len(Ls_Ctl):
-                cmds.parent(Ls_Ctl[-(ord+1)], Ls_Ctl[-(ord+2)])
-            else:
-                continue
+        ls_ctl=[]
+        #Decide what is the joint primary axis
+        ls_sl_objs = cmds.ls(sl=True)
+        ls_final_obj=ls_sl_objs[-1]
+        x=round(cmds.getAttr(ls_final_obj+".translateX"),6)
+        y=round(cmds.getAttr(ls_final_obj+".translateY"),6)
+        z=round(cmds.getAttr(ls_final_obj+".translateZ"),6)
+        if x==-0:
+            x=0
+        if y==-0:
+            y=0
+        if z==-0:
+            z=0
+        normal=[0,0,0]
+        if (x != 0) and (y==0) and (z==0): #joint x axis point to next joint
+            normal = [1,0,0]
+        elif (y != 0) and (x==0) and (z==0):
+            normal = [0,1,0]
+        elif (z != 0) and (y==0) and (x==0):
+            normal = [0,0,1]
+        for i in range(len(ls_sl_objs)):
+            a = cmds.circle(nr=normal, name = ls_sl_objs[i]+"_FK_Ctl")
+            cmds.matchTransform(a, ls_sl_objs[i], piv=0, rot=0, scl=0, pos=1)
+            ls_ctl.append(ls_sl_objs[i]+"_FK_Ctl")
+        ls_ctl.reverse()
+        for i in range(len(ls_ctl)):
+            if i+2 <= len(ls_ctl):
+                cmds.parent(ls_ctl[i], ls_ctl[i+1])
+            else:continue
+        ls_ctl.reverse()
+        ls_cstr = []
+        for i in range(len(ls_ctl)):
+            a = cmds.parentConstraint(ls_ctl[i],ls_sl_objs[i],mo=1)
+            ls_cstr.append(a[0])
+        print(ls_cstr)
+        return [ls_ctl, ls_cstr]
 
     String_Warning0 = "Nothing selected"
     String_Warning1 = "Not Jnt"
@@ -426,7 +509,7 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
         a = [InputJntT, InputJntRo, InputJntS]
         return a
 
-    def createIK_CreateIK(self):#Main
+    def createIK_CreateIKRevFoot(self):#Main
         #IK Part
         Ls_origin_jnt=self.get_sl_obj_and_LR_Dir()[0]; LR_Dir=self.get_sl_obj_and_LR_Dir()[1]
         Ls_IKJnt=self.get_IKFKjnt_list_after_dup(Ls_origin_jnt[0], "IK" , Ls_origin_jnt, LR_Dir)
@@ -600,12 +683,112 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
             
         createSoftCluster()
 
+    def FuncCreate_IKFKSwitch(self):
+        #select the joints from root to tip(the parts you want to be controled by switch, may not be all)
+        #general
+        ls_obj=cmds.ls(sl=1)
+        ls_fk_obj = []
+        for i in range(len(ls_obj)):
+            newname=ls_obj[i]+"_FK"
+            a = cmds.createNode("joint", n=newname)
+            cmds.matchTransform(a, ls_obj[i], piv=0,pos=1,rot=1,scl=0)
+            ls_fk_obj.append(newname)
+            if i>0:
+                cmds.parent(ls_fk_obj[i], ls_fk_obj[i-1])
+            cmds.makeIdentity(a, apply=1)
+        #fk
+        cmds.select(cl=1)
+        for i in range(len(ls_obj)):
+            cmds.select(ls_fk_obj[i],add=1)
+            
+        temp = self.FuncCreateFKRing()
+        ls_fk_ctl=temp[0]
+        ls_fk_cstr=temp[1]
+        #ik
+        print("ls_fk_ctl",ls_fk_ctl,"ls_fk_cstr", ls_fk_cstr)
+        ls_ik_obj = []
+        for i in range(len(ls_obj)):
+            newname = ls_obj[i]+"_IK"
+            a = cmds.createNode("joint", n=newname)
+            cmds.matchTransform(a, ls_obj[i], piv=0, pos=1,rot=1,scl=0)
+            ls_ik_obj.append(newname)
+            if i>0:
+                cmds.parent(ls_ik_obj[i], ls_ik_obj[i-1])
+            cmds.makeIdentity(a, apply=1)
+
+        
+        ik_ikh = cmds.ikHandle(sj=ls_ik_obj[0], ee=ls_ik_obj[-1], sol="ikRPsolver")[0]
+        ik_ctl = cmds.circle(n="IK_Ctl"); cmds.matchTransform(ik_ctl, ik_ikh); cmds.parent(ik_ikh, ik_ctl)
+        #
+        fk_ctl_grp=cmds.group(em=1, n="FK_Ctl_Grp")
+        ik_ctl_grp=cmds.group(em=1, n="IK_Ctl_Grp")
+        sup_grp = cmds.group(em=1, n="SUP")
+        cmds.parent(ls_fk_obj[0], sup_grp);cmds.parent(ls_ik_obj[0], sup_grp)
+        cmds.select(cl=1); cmds.select(ls_fk_obj[0],add=1);cmds.select(ls_ik_obj[0],add=1)
+        self.FuncCreateGarbage()
+        cmds.parent(ls_fk_ctl[0],fk_ctl_grp); cmds.parent(ik_ctl, ik_ctl_grp)
+        
+        #If Warning: Cannot parent components or objects in the underworld.
+        #That's bc the ctrl construction history are not clear in order to further adjustments. dont' care about it
+        #create option ctrl.
+        cmds.select(cl=1)
+        option_ctl = createCtrler_Gear("Option_Ctl"); cmds.select(option_ctl,add=1)
+        #Setting
+        cmds.addAttr(ln="IKFK_Switch", min=0, max=1, dv=0, k=1,h=0)
+        cmds.addAttr(ln="Stretch", at="bool", min=0, max=1, dv=1, k=1,h=0)
+
+
+        cmds.matchTransform(option_ctl, ls_obj[0],piv=0, scl=0, pos=1, rot=0)
+        cmds.parent(fk_ctl_grp,option_ctl);cmds.parent(ik_ctl_grp,option_ctl)
+        
+        #Create Switch
+        nod_rev = cmds.createNode("reverse")
+        cmds.connectAttr(option_ctl+".IKFK_Switch", nod_rev+".inputX")
+        ls_nod_blendColor=[]; ls_nod_vero=[]
+        for i in range(len(ls_obj)):
+            iter_nod_bc = cmds.createNode("blendColors")
+            ls_nod_blendColor.append(iter_nod_bc)
+            iter_nod_vero = cmds.createNode("animBlendNodeAdditiveRotation")
+            ls_nod_vero.append(iter_nod_vero)
+            cmds.setAttr(iter_nod_vero+".rotationInterpolation", 1)
+            
+            #connect translate
+            cmds.connectAttr(ls_ik_obj[i]+".translate", iter_nod_bc+".color1")
+            cmds.connectAttr(ls_fk_obj[i]+".translate", iter_nod_bc+".color2")
+            cmds.connectAttr(nod_rev+".outputX", iter_nod_bc+".blender")
+            cmds.connectAttr(iter_nod_bc+".output", ls_obj[i]+".translate")
+            #connect rotation
+            cmds.connectAttr(ls_ik_obj[i]+".rotate", iter_nod_vero+".inputA")
+            cmds.connectAttr(ls_fk_obj[i]+".rotate", iter_nod_vero+".inputB")
+            cmds.connectAttr(option_ctl+".IKFK_Switch", iter_nod_vero+".weightB")
+            cmds.connectAttr(nod_rev+".outputX", iter_nod_vero+".weightA")
+            cmds.connectAttr(iter_nod_vero+".output", ls_obj[i]+".rotate")
+
+
+
+        
+
+
+        
+
+
+
+
     def FuncCreate_JointChain(self):
         count = self.ui.QLEJointChain.text()  # Amount of joints to create.
         count = int(count)
         if count<3:
             print("Input must be larger than 3")
+            one = cmds.ls(sl=1)[0]
+            two = cmds.ls(sl=1)[1]
+            jnt1 = cmds.createNode("joint")
+            jnt2 = cmds.createNode("joint")
+            cmds.matchTransform(jnt1, one)
+            cmds.matchTransform(jnt2, two)
+            cmds.parent(jnt1, jnt2)
+
             return
+        
         a = cmds.ls(sl=1)
         start = a[0]  # Change to object to start from.
         end = a[1]  # Chagne to object to end to.
@@ -623,12 +806,12 @@ class cls_Window(MayaQWidgetDockableMixin, p2.QtWidgets.QDialog):
             for j in range(ZeroDigits):
                 Zero_Apply = Zero_Apply + Zero
             recIncrement = Zero_Apply + str(Increment)
-            newname = "Bendy" + recIncrement
-            cmds.rename(jnt, newname)
+            #newname = "Bendy" + recIncrement
+            #cmds.rename(jnt, newname)
             #cmds.setAttr(jnt + ".displayLocalAxis", False)  # Display its orientation.
-            ls.append(newname)
-            constraint = cmds.parentConstraint(start, newname, weight=1.0 - perc)[0]  # Apply 1st constraint, with inverse of current percentage.
-            cmds.parentConstraint(end, newname, weight=perc)  # Apply 2nd constraint, with current percentage as-is.
+            ls.append(jnt)
+            constraint = cmds.parentConstraint(start, jnt, weight=1.0 - perc)[0]  # Apply 1st constraint, with inverse of current percentage.
+            cmds.parentConstraint(end, jnt, weight=perc)  # Apply 2nd constraint, with current percentage as-is.
             cmds.delete(constraint)  # Don't need this anymore.
             perc += steps  # Increase percentage for next iteration.
         ls.reverse()
