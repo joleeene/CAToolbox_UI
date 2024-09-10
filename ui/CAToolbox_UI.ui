@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>387</width>
-    <height>566</height>
+    <width>408</width>
+    <height>635</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
      <item>
       <widget class="QTabWidget" name="Tab_Grp">
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="Tab_General">
         <property name="minimumSize">
@@ -40,7 +40,7 @@
            <x>10</x>
            <y>10</y>
            <width>340</width>
-           <height>161</height>
+           <height>91</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout">
@@ -88,15 +88,22 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="QPBCreateChildJoint">
+            <property name="text">
+             <string>CreateChildJoint</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
         <widget class="QLabel" name="QLShow">
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>180</y>
-           <width>211</width>
-           <height>161</height>
+           <y>340</y>
+           <width>361</width>
+           <height>201</height>
           </rect>
          </property>
          <property name="frameShape">
@@ -108,6 +115,72 @@
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
+        </widget>
+        <widget class="QWidget" name="gridLayoutWidget_2">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>170</y>
+           <width>343</width>
+           <height>71</height>
+          </rect>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_8">
+          <item row="0" column="0">
+           <widget class="QPushButton" name="QPBOutlinerColorReturn">
+            <property name="text">
+             <string>Outliner None</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="QPBOutlinerColorCyan">
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    background-color: rgb(44, 222, 231)
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="QPBOutlinerColorRed">
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    background-color: rgb(255, 20,50)
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QPushButton" name="QPBOutlinerColorGreen">
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    background-color: rgb(44, 255, 50)
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="horizontalLayoutWidget_5">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>110</y>
+           <width>341</width>
+           <height>51</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3"/>
         </widget>
        </widget>
        <widget class="QWidget" name="Tab_Naming">
@@ -257,7 +330,7 @@
            <x>10</x>
            <y>10</y>
            <width>341</width>
-           <height>171</height>
+           <height>91</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -489,70 +562,122 @@ space switching</string>
         <widget class="QWidget" name="horizontalLayoutWidget_2">
          <property name="geometry">
           <rect>
-           <x>9</x>
-           <y>179</y>
-           <width>341</width>
-           <height>71</height>
+           <x>10</x>
+           <y>100</y>
+           <width>342</width>
+           <height>81</height>
           </rect>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_10">
           <item>
-           <widget class="QPushButton" name="QPBColorReturn">
-            <property name="styleSheet">
-             <string notr="true">QPushButton {
-    background-color: rgb(127, 127, 127);
-}</string>
-            </property>
-            <property name="text">
-             <string>ColorReturn</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="QPBColorYellow">
-            <property name="styleSheet">
-             <string notr="true">QPushButton {
+           <layout class="QGridLayout" name="gridLayout_7">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="QPBColorYellow">
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
     background-color: rgb(255, 255, 0);
 }</string>
-            </property>
-            <property name="text">
-             <string>Center</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="QPBColorRed">
-            <property name="styleSheet">
-             <string notr="true">QPushButton {
-    background-color: rgb(176, 43, 43)
-}</string>
-            </property>
-            <property name="text">
-             <string>Right</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="QPBColorBlue">
-            <property name="styleSheet">
-             <string notr="true">QPushButton {
+              </property>
+              <property name="text">
+               <string>Center</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="QPBColorBlue">
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
     background-color: rgb(44, 57, 231)
 }</string>
-            </property>
-            <property name="text">
-             <string>Left</string>
-            </property>
-           </widget>
+              </property>
+              <property name="text">
+               <string>Left</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="QPBColorReturn">
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: rgb(127, 127, 127);
+}</string>
+              </property>
+              <property name="text">
+               <string>ColorReturn</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="QPBColorRed">
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: rgb(176, 43, 43)
+}</string>
+              </property>
+              <property name="text">
+               <string>Right</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QPushButton" name="QPBColorPurple">
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: rgb(168, 41, 108)
+}</string>
+              </property>
+              <property name="text">
+               <string>31</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="QPBColorCyan">
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: rgb(100, 220, 225)
+}</string>
+              </property>
+              <property name="text">
+               <string>18</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="QPBColorSkin">
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: rgb(228, 172, 121)
+}</string>
+              </property>
+              <property name="text">
+               <string>21</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="QPBColorPink">
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: rgb(255, 176, 176)
+}</string>
+              </property>
+              <property name="text">
+               <string>20</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
         <widget class="QWidget" name="horizontalLayoutWidget_3">
          <property name="geometry">
           <rect>
-           <x>9</x>
-           <y>249</y>
+           <x>10</x>
+           <y>240</y>
            <width>341</width>
-           <height>81</height>
+           <height>36</height>
           </rect>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_11">
@@ -565,6 +690,16 @@ space switching</string>
               </property>
               <property name="text">
                <string>JointSize</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="QLEJointSize"/>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="QPBJointSizeExe">
+              <property name="text">
+               <string>Exe</string>
               </property>
              </widget>
             </item>
@@ -581,16 +716,6 @@ space switching</string>
               </property>
              </spacer>
             </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="QLEJointSize"/>
-            </item>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="QPBJointSizeExe">
-              <property name="text">
-               <string>Exe</string>
-              </property>
-             </widget>
-            </item>
            </layout>
           </item>
          </layout>
@@ -599,8 +724,8 @@ space switching</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>330</y>
-           <width>352</width>
+           <y>280</y>
+           <width>372</width>
            <height>81</height>
           </rect>
          </property>
@@ -625,9 +750,9 @@ space switching</string>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QPushButton" name="QPBCreateIK">
+             <widget class="QPushButton" name="QPBCreateIKRevFoot">
               <property name="text">
-               <string>CreateIK</string>
+               <string>CreateIKRevFoot</string>
               </property>
              </widget>
             </item>
@@ -648,6 +773,13 @@ space switching</string>
               </property>
              </widget>
             </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="QPBCreateIKFKSwitch">
+              <property name="text">
+               <string>CreateIKFKSwitch</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
@@ -656,7 +788,7 @@ space switching</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>410</y>
+           <y>360</y>
            <width>341</width>
            <height>61</height>
           </rect>
