@@ -12,7 +12,7 @@ from PySide6.QtCore import QFile
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
 from PySide6.QtUiTools import QUiLoader
 
-path = r"C:\Users\linxy\OneDrive\OrganizeFilesStructure\08_Environment\Config\Maya\script\CAToolbox_UI"
+path = r"D:\Config\Maya\script\CAToolbox_UI"
 def PathRectifier(Input_Str):
     return Input_Str.replace("\\", "/")
 rec_path = PathRectifier(path)
@@ -152,15 +152,15 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
         print(selected_nodes)
 
     def FuncGetChildNodes(self):
-        selected_nodes = cmds.ls(selection = True)
-        selected_nodes_children = cmds.listRelatives(selected_nodes, 
+        ls_sl_objs = cmds.ls(sl=1)
+        ls_sl_objs_child = cmds.listRelatives(ls_sl_objs, 
                                                         allDescendents=True, 
                                                         children=True, 
                                                         type="transform"
                                                         )
-        for i in range(len(selected_nodes)):
-            selected_nodes_children.insert(0,selected_nodes[len(selected_nodes)-1-i])
-        slNodes_rmDup = selected_nodes_children
+        for i in range(len(ls_sl_objs)):
+            ls_sl_objs_child.insert(0,ls_sl_objs[len(ls_sl_objs)-1-i])
+        slNodes_rmDup = ls_sl_objs_child
         slNodes_rmDup = list(dict.fromkeys(slNodes_rmDup))
         cmds.select(slNodes_rmDup)
         print(slNodes_rmDup)
@@ -280,23 +280,24 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
 
     #Tab_Naming
 
-    def AuxFuncMakeRelativeName(self, selected_objs): #input: origin selected objs list
+    def AuxFuncMakeRelativeName(self, sl_objs): #input: origin selected objs list
         RelativeNameList = []
-        for i in range(len(selected_objs)):
-            RelativeName = re.sub(r"^.*\|", "", selected_objs[i])
+        for i in range(len(sl_objs)):
+            RelativeName = re.sub(r"^.*\|", "", sl_objs[i])
             RelativeNameList.append(RelativeName)
         return RelativeNameList
 
     def FuncExePrefix(self):
         sl_objs = cmds.ls(selection=True) #origin namepath list
-        Re_sl_objs = self.AuxFuncMakeRelativeName(sl_objs) #relative namepath list
-        print(Re_sl_objs)
+        re_sl_objs = self.AuxFuncMakeRelativeName(sl_objs) #relative namepath list
+        # print(Re_sl_objs)
 
         IncrementKey = "$N"
         Zero = "0"
         MaxZero = math.floor(math.log10(len(sl_objs)))+1
         if IncrementKey in self.ui.QLEPrefix.text():
             for i in range(len(sl_objs)):
+                print("aaaaaaa")
                 Increment = i+1
                 ZeroDigits = MaxZero -math.floor(math.log10(Increment))
                 Zero_Apply = ""
@@ -306,15 +307,15 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 recIncrement = Zero_Apply + str(Increment)
                 recQLEPrefix = self.ui.QLEPrefix.text().replace(IncrementKey, recIncrement)
                 print(recQLEPrefix)
-                NewName = recQLEPrefix + Re_sl_objs[i]
+                NewName = recQLEPrefix + re_sl_objs[i]
                 cmds.rename(sl_objs[i], NewName)
-                sl_objs = cmds.ls(selection=True)
+                
         else:
             for i in range(len(sl_objs)):
                 Increment = i+1
-                NewName = self.ui.QLEPrefix.text() + Re_sl_objs[i]
+                NewName = self.ui.QLEPrefix.text() + re_sl_objs[i]
                 cmds.rename(sl_objs[i], NewName)
-                sl_objs = cmds.ls(selection=True)
+                
 
     def FuncExeSuffix(self):
         sl_objs = cmds.ls(selection=True)
@@ -335,7 +336,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 recQLESuffix = self.ui.QLESuffix.text().replace(IncrementKey, recIncrement)
                 NewName = Re_sl_objs[i] + recQLESuffix
                 cmds.rename(sl_objs[i], NewName)
-                sl_objs = cmds.ls(selection=True)
+                
             else:
                 print("No nodes selected")
         else:
@@ -343,7 +344,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 Increment = i+1
                 NewName = Re_sl_objs[i] + self.ui.QLESuffix.text()
                 cmds.rename(sl_objs[i], NewName)
-                sl_objs = cmds.ls(selection=True)
+                
         
     def FuncExeReplace(self):
         sl_objs = cmds.ls(selection=True)
@@ -364,7 +365,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 recQLEWith = self.ui.QLEWith.text().replace(IncrementKey, recIncrement)
                 NewName = Re_sl_objs[i].replace(self.ui.QLEReplace.text(), recQLEWith, 1)
                 cmds.rename(sl_objs[i], NewName)
-                sl_objs = cmds.ls(selection=True)
+                
             else:
                 print("No nodes selected")
         else:
@@ -372,7 +373,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 Increment =i+1
                 NewName = Re_sl_objs[i].replace(self.ui.QLEReplace.text(), self.ui.QLEWith.text(), 1)
                 cmds.rename(sl_objs[i], NewName)
-                sl_objs = cmds.ls(selection=True)
+                
 
     def FuncExeWhole(self):
         #Must add Increment
@@ -397,7 +398,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 print(recQLEWhole)
                 NewName = recQLEWhole
                 cmds.rename(sl_objs[i], NewName)
-                sl_objs = cmds.ls(selection=True)
+                
             else:
                 print("No nodes selected")
         else:
@@ -405,7 +406,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 Increment = i+1
                 NewName = self.ui.QLEWhole.text()
                 cmds.rename(sl_objs[i], NewName)
-                sl_objs = cmds.ls(selection=True)
+                
  
     #Tab_Rigging
                 
