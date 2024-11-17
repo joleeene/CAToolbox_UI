@@ -3,30 +3,37 @@ import math, copy, re
 #import PySide2 as p2
 import PySide6 as p6
 import maya.OpenMayaUI as omui
-import maya.OpenMaya as om
+import maya.api.OpenMaya as om
 #import shiboken2
 import shiboken6
 import maya.cmds as cmds
 from PySide6 import QtGui, QtCore
 from PySide6.QtCore import QFile
+from PySide6.QtCore import Qt
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
 from PySide6.QtUiTools import QUiLoader
 
-path = r"D:\Config\Maya\script\CAToolbox_UI"
-def PathRectifier(Input_Str):
-    return Input_Str.replace("\\", "/")
-rec_path = PathRectifier(path)
+
+the_path =   r"C:\Users\linxy\OneDrive\OrganizeFilesStructure\08_Environment\Config\Maya\script\CAToolbox_UI"
+# def PathRectifier(Input_Str):
+#     return Input_Str.replace("\\", "/")
+# rec_path = PathRectifier(path)
 
 import sys
-sys.path.append(rec_path)
+
+if the_path not in sys.path:
+    sys.path.append(the_path)
 import importlib
+
 #Utils files import
+import utils
 
 from utils.utilsTest import *
 from utils.createCtrler import *
+import utils.createCtrler2 as cc2
 from utils.modCtrlerColor import *
 from utils.CreateIK import *
-
+importlib.reload(cc2)
 
 
 def mayaMainWindow():
@@ -41,11 +48,11 @@ class ClickableLabel(p6.QtWidgets.QLabel):
 class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
     def __init__(self, parent=mayaMainWindow()):
         super(cls_Window, self).__init__(parent)
-        #--------------Config. This is mine. You need to change this path to your own.
-        self.setWindowTitle("CA2023 Toolbox")
-        self.resize(400, 550)
         
-        file_path = rec_path+"/ui/CAToolbox_UI.ui"
+        self.setWindowTitle("CA2023 Toolbox")
+        self.resize(500 , 650)
+        
+        file_path = the_path+"/ui/CAToolbox_UI.ui"
         ##################################################################################
         ui_loader = QUiLoader()
         ui_file = QFile(file_path)
@@ -91,16 +98,87 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
         self.ui.QPBWholeExe.clicked.connect(self.FuncExeWhole)
 
         #Tab_Rigging
-        self.ui.QPBCtrlerCube.clicked.connect(createCtrler_Cube)
-        self.ui.QPBCtrlerSphere.clicked.connect(createCtrler_Sphere)
-        self.ui.QPBCtrlerPrism.clicked.connect(createCtrler_Prism)
-        self.ui.QPBCtrlerRing.clicked.connect(createCtrler_Ring)
-        self.ui.QPBCtrlerRotPike.clicked.connect(createCtrler_RotPike)
-        self.ui.QPBCtrlerRot1Dir.clicked.connect(createCtrler_Rot1Dir)
-        self.ui.QPBCtrlerTran1Dir.clicked.connect(createCtrler_Tran1Dir)
-        self.ui.QPBCtrlerGear.clicked.connect(createCtrler_Gear)
-        self.ui.QPBCtrlerTransCube.clicked.connect(createCtrler_TransCube)
-        self.ui.QPBCtrler4DirCirc.clicked.connect(createCtrler_4DirCirc)
+
+        self.ui.QPBCtrlerCube.clicked.connect(lambda: cc2.ctrler(n="testctrl",
+                p=cc2.ctrler.cube_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerSphere.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.sphere_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerPrism.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.prism_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerRing.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.ring_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerRotPike.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.rotPike_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerRot1Dir.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.rot1Dir_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerTran1Dir.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.tran1Dir_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerGear.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.gear_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerTransCube.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.transCube_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrler4DirCirc.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.fourDirCirc_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        
+        self.ui.QPBCtrlerM03.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.masterCtl03_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerM02.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.masterCtl02_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerM01.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.masterCtl01_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerBendyLimb.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.bendyLimb_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerHandCtl.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.handCtl_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerFin01.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.finCtl_01_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerFin02.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.finCtl_02_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerFin03.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.finCtl_03_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerFin04.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.finCtl_04_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerFinMeta.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.finCtl_meta_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerSpineIkTip.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.spineIkTip_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerSpineFk.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.spineFk_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerSpineIkRoot.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.spineIkRoot_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerSpineIkInv1.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.spineIkInv01_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerSpineIkInv2.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.spineIkInv02_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        self.ui.QPBCtrlerSpineIkMid.clicked.connect(lambda: cc2.ctrler(n=self.Ctrler_update_name(),
+                p=cc2.ctrler.spineIkMid_v, norm=self.Ctrler_update_direction(), 
+                scl=float(self.ui.QLECtrlerSize.text())))
+        
 
         self.ui.QPBColorReturn.clicked.connect(modCtrlerColor_ReturnColor)
         self.ui.QPBColorYellow.clicked.connect(modCtrlerColor_TurnYellow)
@@ -109,6 +187,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
         self.ui.QPBColorPurple.clicked.connect(modCtrlerColor_TurnPurple)
         self.ui.QPBColorPink.clicked.connect(modCtrlerColor_TurnPink)
         self.ui.QPBColorSkin.clicked.connect(modCtrlerColor_TurnSkin)
+
         self.ui.QPBColorCyan.clicked.connect(modCtrlerColor_TurnCyan)
 
         self.ui.QPBJointSizeExe.clicked.connect(self.FuncExeJointSize)
@@ -122,13 +201,34 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
         
         self.ui.QPBJointChain.clicked.connect(self.FuncCreate_JointChain)
 
-
+        #Tab_Animation
+        self.ui.QPBrivet.clicked.connect(self.FuncRivet)
+        self.ui.QPBscreenSpaceMoTrail.clicked.connect(self.FuncScreenSpaceMoTrail)
+        self.ui.QPBslAllCtrlWithKeys.clicked.connect(self.FuncslAllCtrlWithKeys)
 
         ###
         self.ui.show()  
     ###Func
     def test(self):
         print("VVVVVVVV")
+
+    def Ctrler_update_direction(self):
+        d=[1,0,0]
+        if self.ui.QRBX.isChecked():
+            d=[1,0,0]
+        if self.ui.QRBY.isChecked():
+            d=[0,1,0]
+        if self.ui.QRBZ.isChecked():
+            d=[0,0,1]
+        return d
+    
+    def Ctrler_update_name(self):
+        n="testCtrl"
+        if self.ui.QLECtrlName.text():
+            n=self.ui.QLECtrlName.text()
+
+        return n
+
     def RealRestTransform(self, input_obj):
         attrArray = [
             "translateX",
@@ -152,15 +252,15 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
         print(selected_nodes)
 
     def FuncGetChildNodes(self):
-        ls_sl_objs = cmds.ls(sl=1)
-        ls_sl_objs_child = cmds.listRelatives(ls_sl_objs, 
+        selected_nodes = cmds.ls(selection = True)
+        selected_nodes_children = cmds.listRelatives(selected_nodes, 
                                                         allDescendents=True, 
                                                         children=True, 
                                                         type="transform"
                                                         )
-        for i in range(len(ls_sl_objs)):
-            ls_sl_objs_child.insert(0,ls_sl_objs[len(ls_sl_objs)-1-i])
-        slNodes_rmDup = ls_sl_objs_child
+        for i in range(len(selected_nodes)):
+            selected_nodes_children.insert(0,selected_nodes[len(selected_nodes)-1-i])
+        slNodes_rmDup = selected_nodes_children
         slNodes_rmDup = list(dict.fromkeys(slNodes_rmDup))
         cmds.select(slNodes_rmDup)
         print(slNodes_rmDup)
@@ -280,24 +380,23 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
 
     #Tab_Naming
 
-    def AuxFuncMakeRelativeName(self, sl_objs): #input: origin selected objs list
+    def AuxFuncMakeRelativeName(self, selected_objs): #input: origin selected objs list
         RelativeNameList = []
-        for i in range(len(sl_objs)):
-            RelativeName = re.sub(r"^.*\|", "", sl_objs[i])
+        for i in range(len(selected_objs)):
+            RelativeName = re.sub(r"^.*\|", "", selected_objs[i])
             RelativeNameList.append(RelativeName)
         return RelativeNameList
 
     def FuncExePrefix(self):
         sl_objs = cmds.ls(selection=True) #origin namepath list
-        re_sl_objs = self.AuxFuncMakeRelativeName(sl_objs) #relative namepath list
-        # print(Re_sl_objs)
+        Re_sl_objs = self.AuxFuncMakeRelativeName(sl_objs) #relative namepath list
+        print(Re_sl_objs)
 
         IncrementKey = "$N"
         Zero = "0"
         MaxZero = math.floor(math.log10(len(sl_objs)))+1
         if IncrementKey in self.ui.QLEPrefix.text():
             for i in range(len(sl_objs)):
-                print("aaaaaaa")
                 Increment = i+1
                 ZeroDigits = MaxZero -math.floor(math.log10(Increment))
                 Zero_Apply = ""
@@ -307,15 +406,15 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 recIncrement = Zero_Apply + str(Increment)
                 recQLEPrefix = self.ui.QLEPrefix.text().replace(IncrementKey, recIncrement)
                 print(recQLEPrefix)
-                NewName = recQLEPrefix + re_sl_objs[i]
+                NewName = recQLEPrefix + Re_sl_objs[i]
                 cmds.rename(sl_objs[i], NewName)
-                
+                sl_objs = cmds.ls(selection=True)
         else:
             for i in range(len(sl_objs)):
                 Increment = i+1
-                NewName = self.ui.QLEPrefix.text() + re_sl_objs[i]
+                NewName = self.ui.QLEPrefix.text() + Re_sl_objs[i]
                 cmds.rename(sl_objs[i], NewName)
-                
+                sl_objs = cmds.ls(selection=True)
 
     def FuncExeSuffix(self):
         sl_objs = cmds.ls(selection=True)
@@ -336,7 +435,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 recQLESuffix = self.ui.QLESuffix.text().replace(IncrementKey, recIncrement)
                 NewName = Re_sl_objs[i] + recQLESuffix
                 cmds.rename(sl_objs[i], NewName)
-                
+                sl_objs = cmds.ls(selection=True)
             else:
                 print("No nodes selected")
         else:
@@ -344,7 +443,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 Increment = i+1
                 NewName = Re_sl_objs[i] + self.ui.QLESuffix.text()
                 cmds.rename(sl_objs[i], NewName)
-                
+                sl_objs = cmds.ls(selection=True)
         
     def FuncExeReplace(self):
         sl_objs = cmds.ls(selection=True)
@@ -365,7 +464,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 recQLEWith = self.ui.QLEWith.text().replace(IncrementKey, recIncrement)
                 NewName = Re_sl_objs[i].replace(self.ui.QLEReplace.text(), recQLEWith, 1)
                 cmds.rename(sl_objs[i], NewName)
-                
+                sl_objs = cmds.ls(selection=True)
             else:
                 print("No nodes selected")
         else:
@@ -373,7 +472,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 Increment =i+1
                 NewName = Re_sl_objs[i].replace(self.ui.QLEReplace.text(), self.ui.QLEWith.text(), 1)
                 cmds.rename(sl_objs[i], NewName)
-                
+                sl_objs = cmds.ls(selection=True)
 
     def FuncExeWhole(self):
         #Must add Increment
@@ -398,7 +497,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 print(recQLEWhole)
                 NewName = recQLEWhole
                 cmds.rename(sl_objs[i], NewName)
-                
+                sl_objs = cmds.ls(selection=True)
             else:
                 print("No nodes selected")
         else:
@@ -406,7 +505,7 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
                 Increment = i+1
                 NewName = self.ui.QLEWhole.text()
                 cmds.rename(sl_objs[i], NewName)
-                
+                sl_objs = cmds.ls(selection=True)
  
     #Tab_Rigging
                 
@@ -765,7 +864,228 @@ class cls_Window(MayaQWidgetDockableMixin, p6.QtWidgets.QDialog):
             cmds.connectAttr(nod_rev+".outputX", iter_nod_vero+".weightA")
             cmds.connectAttr(iter_nod_vero+".output", ls_obj[i]+".rotate")
 
+    #Tab_Animaiton
 
+    def FuncRivet(self):
+        # # https://gist.github.com/rjmoggach/a78d428b6d49b2422fad754ee54eec5e
+        # #  Copyright (C) 2000-2001 Michael Bazhutkin - Copyright (C) 2000 studio Klassika
+        # #  www.geocites.com/bazhutkin
+        # #  bazhutkin@mail.ru
+        # # 
+        # #   Rivet (button) 1.0
+        # #   Script File
+        # #   MODIFY THIS AT YOUR OWN RISK
+        # # 
+        # #   Creation Date:  April 13, 2001
+        # # 
+        # # 
+        # #   Description:
+        # # 	Use "Rivet" to constrain locator to polygon or NURBS surfaces
+        # # 	Select two edges on polygon object
+        # # 	or select one point on NURBS surface and call rivet
+        # # 	Parent your rivets and buttons to this locator
+
+        # # logic: select 2 edges to create a nurbsLoft namely a surface, then constraint the locator to it using pointOnSurfaceInfo.        
+        nameObject = None
+        nod_posi = None
+
+        parts = []
+        ls_sl_components = cmds.ls(sl=1, fl=1) #fl = flatten. It would output vtx[1:5] instead of vtx[1], vtx[2]....[5] if fl = 0.
+
+        if len(ls_sl_components) > 0:
+            if len(ls_sl_components) != 2:
+                cmds.error("No two edges selected")
+                return 
+
+            # Tokenize the first edge and get object name and edge index
+            parts = ls_sl_components[0].split(".")
+            nameObject = parts[0]
+            edge1 = int(ls_sl_components[0].split("[")[1].replace("]", ""))
+
+            # Tokenize the second edge and get the edge index
+            edge2 = int(ls_sl_components[1].split("[")[1].replace("]", ""))
+
+            # Create the nodes
+            nod_cfme = cmds.createNode("curveFromMeshEdge", name="rivetCurveFromMeshEdge1")
+            # cmds.setAttr(f"{nod_cfme}.ihi", 1)
+            cmds.setAttr(f"{nod_cfme}.edgeIndex[0]", edge1)
+
+            nod_cfme2 = cmds.createNode("curveFromMeshEdge", name="rivetCurveFromMeshEdge2")
+            # cmds.setAttr(f"{nod_cfme2}.ihi", 1)
+            cmds.setAttr(f"{nod_cfme2}.edgeIndex[0]", edge2)
+
+            nod_loft = cmds.createNode("loft", name="rivetLoft1")
+            cmds.setAttr(f"{nod_loft}.inputCurve", size=2)
+            cmds.setAttr(f"{nod_loft}.uniform", 1)
+            cmds.setAttr(f"{nod_loft}.reverseSurfaceNormals", 1)
+
+            nod_posi = cmds.createNode("pointOnSurfaceInfo", name="rivetPointOnSurfaceInfo1")
+            cmds.setAttr(f"{nod_posi}.turnOnPercentage", 1)
+            cmds.setAttr(f"{nod_posi}.parameterU", 0.5)
+            cmds.setAttr(f"{nod_posi}.parameterV", 0.5)
+
+            # Connect attributes
+            cmds.connectAttr(f"{nod_loft}.outputSurface", f"{nod_posi}.inputSurface")
+            cmds.connectAttr(f"{nod_cfme}.outputCurve", f"{nod_loft}.inputCurve[0]")
+            cmds.connectAttr(f"{nod_cfme2}.outputCurve", f"{nod_loft}.inputCurve[1]")
+            cmds.connectAttr(f"{nameObject}.worldMesh", f"{nod_cfme}.inputMesh")
+            cmds.connectAttr(f"{nameObject}.worldMesh", f"{nod_cfme2}.inputMesh")
+
+        else:
+            list_surface = cmds.ls(selection=True, fl=True)
+            size = len(list_surface)
+
+            if size > 0:
+                if size != 1:
+                    cmds.error("No one point selected")
+                    return ""
+
+                # Tokenize and retrieve object and UV coordinates
+                parts = list_surface[0].split(".")
+                nameObject = parts[0]
+                u = float(parts[1].split("[")[1].split("]")[0])
+                v = float(parts[2].split("[")[1].split("]")[0])
+
+                nod_posi = cmds.createNode("pointOnSurfaceInfo", name="rivetPointOnSurfaceInfo1")
+                cmds.setAttr(f"{nod_posi}.turnOnPercentage", 0)
+                cmds.setAttr(f"{nod_posi}.parameterU", u)
+                cmds.setAttr(f"{nod_posi}.parameterV", v)
+
+                cmds.connectAttr(f"{nameObject}.ws", f"{nod_posi}.is")
+
+            else:
+                cmds.error("No edges or point selected")
+                return ""
+
+        # Create the locator and aim constraint
+        loc_trg = cmds.createNode("transform", name="rivet1")
+        locShape_trg = cmds.createNode("locator", name=f"{loc_trg}Shape", parent=loc_trg)
+
+        nameAC = cmds.createNode("aimConstraint", parent=loc_trg, name=f"{loc_trg}_rivetAimConstraint1")
+        cmds.setAttr(f"{nameAC}.target[0].targetWeight", 1)
+        cmds.setAttr(f"{nameAC}.aimVector", 0, 1, 0, type="double3")
+        cmds.setAttr(f"{nameAC}.upVector", 0, 0, 1, type="double3")
+
+        # Connect the locator attributes
+        cmds.connectAttr(f"{nod_posi}.position", f"{loc_trg}.translate")
+        cmds.connectAttr(f"{nod_posi}.normal", f"{nameAC}.target[0].targetTranslate")
+        cmds.connectAttr(f"{nod_posi}.tangentV", f"{nameAC}.worldUpVector")
+        cmds.connectAttr(f"{nameAC}.constraintRotateX", f"{loc_trg}.rotateX")
+        cmds.connectAttr(f"{nameAC}.constraintRotateY", f"{loc_trg}.rotateY")
+        cmds.connectAttr(f"{nameAC}.constraintRotateZ", f"{loc_trg}.rotateZ")
+
+        
+        
+
+        if (self.ui.QCBrivetMoTrail.checkState() == Qt.Checked):
+            mtShape = cmds.createNode("motionTrailShape", n = "testMoTrailShape")
+            mtSelf = cmds.createNode("motionTrail", n = "testMoTrail")
+            mtXform = cmds.listRelatives(mtShape, p=1)[0]
+
+            cmds.connectAttr(f"{mtSelf}.extraKeyframeTimes", f"{mtShape}.extraKeyframeTimes")
+            cmds.connectAttr(f"{mtSelf}.frames", f"{mtShape}.frames")
+            cmds.connectAttr(f"{mtSelf}.increment", f"{mtShape}.increment")
+            cmds.connectAttr(f"{mtSelf}.keyframeFlags", f"{mtShape}.keyframeFlags")
+            cmds.connectAttr(f"{mtSelf}.keyframeTimes", f"{mtShape}.keyframeTimes")
+            cmds.connectAttr(f"{mtSelf}.points", f"{mtShape}.points")
+            cmds.connectAttr(f"{mtSelf}.startTime", f"{mtShape}.startTime")
+            cmds.connectAttr(f"{mtSelf}.localPosition", f"{mtShape}.localPosition")
+
+            cmds.connectAttr(f"{loc_trg}.message", f"{mtShape}.transformToMove")
+            cmds.connectAttr(f"{loc_trg}.worldMatrix", f"{mtSelf}.inputMatrix")
+            cmds.connectAttr(f"{locShape_trg}.localPosition", f"{mtSelf}.localPosition")
+            cmds.setAttr(f"{mtSelf}.startTime", cmds.playbackOptions(q=1, minTime=1))
+            cmds.setAttr(f"{mtSelf}.endTime", cmds.playbackOptions(q=1, maxTime=1))
+        
+        # Select the locator
+        cmds.select(loc_trg)
+
+        #if self.ui.QCBrivetMoTrail.checked
+        return loc_trg
+
+    def FuncScreenSpaceMoTrail(self):
+        def get_active_cam():
+            #https://forums.autodesk.com/t5/maya-programming/query-currently-active-viewport-camera/td-p/8814385 
+            #i prefer to be conservative on this code. usually the last cam is the one u set active.
+            for i in cmds.getPanel(type="modelPanel"):
+                cam=cmds.modelEditor(i,q=1,av=1,cam=1)
+                cam = cam.split(r"|")[1]
+            return cam
+
+        def get_pos(input_obj):
+            pos = cmds.xform(input_obj, q=1, ws=1, t=1)
+            return om.MVector(pos)
+        
+        def get_plane_normal(input_plane):
+            mx_plane = cmds.xform(input_plane, q=1, m=1, ws=1)            
+            return om.MVector(mx_plane[8], mx_plane[9], mx_plane[10])
+        
+        def ray_plane_intersect(pos_loc, pos_cam, pos_plane, normal_plane):
+            vec_cam_n_loc = pos_loc - pos_cam
+            vec_cam_n_loc.normalize()
+            vec_cam_n_plane = pos_plane - pos_cam
+            dotProd_cam_loc___cam_plane = vec_cam_n_loc * vec_cam_n_plane
+            if dotProd_cam_loc___cam_plane < 1e-6:
+                return
+
+            aa = vec_cam_n_plane / dotProd_cam_loc___cam_plane #dist between cam & plane / cos == 
+            bb = aa * vec_cam_n_loc #dist between cam & intersect point
+            res = pos_cam + bb * (vec_cam_n_loc)
+            return res
+        
+        f_default_plane_dist = -10
+        trg_obj = cmds.ls(sl=1)[0]
+        if not trg_obj: 
+            print("plz select 1 obj")
+            return
+        cam_active = get_active_cam()
+        nod_plane = cmds.polyPlane(ax=[0,0,1], ch=0, sh=1, sw=1)[0]
+        print(trg_obj, cam_active, nod_plane)
+        cmds.parent(nod_plane, cam_active)
+        self.RealRestTransform(nod_plane)
+        cmds.setAttr(f"{nod_plane}.translateZ", f_default_plane_dist)
+        
+        pos_trg_obj = get_pos(trg_obj)
+        pos_cam_active = get_pos(cam_active)
+        pos_nod_plane = get_pos(nod_plane)
+        n_plane = get_plane_normal(nod_plane)
+        pos_intersect_point  = ray_plane_intersect(pos_trg_obj, pos_cam_active, pos_nod_plane, n_plane)
+        
+        #run timeline
+        f_startframe, f_endframe = cmds.playbackOptions(q=1, min=1), cmds.playbackOptions(q=1, max=1)
+        where_was_i = cmds.currentTime(q=1)
+        ls_res_world_pos = []
+        ls_loc_trg = []
+        for i in range(int(f_startframe), int(f_endframe)+1):
+            cmds.currentTime(i)
+            pos_trg_obj = get_pos(trg_obj)
+            pos_cam_active = get_pos(cam_active)
+            pos_nod_plane = get_pos(nod_plane)
+            n_plane = get_plane_normal(nod_plane)
+            pos_intersect_point  = ray_plane_intersect(pos_trg_obj, pos_cam_active, pos_nod_plane, n_plane)
+            ls_res_world_pos.append(pos_intersect_point)
+            loc_trg = cmds.createNode("transform", name="shitt"+str(i))
+            locShape_trg = cmds.createNode("locator", name=f"{loc_trg}Shape", parent=loc_trg)
+            ls_loc_trg.append(loc_trg)
+            cmds.xform(loc_trg, t=pos_intersect_point)
+            cmds.parent(loc_trg, cam_active)
+        #tried on calc matrix to do it, failed.
+        cmds.currentTime(where_was_i)
+        ls_loc_trg_pos = []
+        for i in range(len(ls_loc_trg)):
+            a = cmds.xform(ls_loc_trg[i], q=1, ws=1, t=1)
+            ls_loc_trg_pos.append(a)
+        crv_screenSpace_MoTrail = cmds.curve(d=1, p=ls_loc_trg_pos, n="ScreenSpaceMoTrail", ws=1)
+        crvShape_screenSpace_MoTrail = cmds.listRelatives(crv_screenSpace_MoTrail, f=1, s=1)[0]
+        cmds.setAttr(f"{crvShape_screenSpace_MoTrail}.dispCV", 1)
+        cmds.setAttr(f"{crvShape_screenSpace_MoTrail}.overrideEnabled", 1)
+        cmds.setAttr(f"{crvShape_screenSpace_MoTrail}.overrideColor", 14)
+        cmds.parent(crv_screenSpace_MoTrail, cam_active)
+        cmds.delete(nod_plane, ls_loc_trg)
+
+
+    def FuncslAllCtrlWithKeys(self):
+        pass
 
         
 
