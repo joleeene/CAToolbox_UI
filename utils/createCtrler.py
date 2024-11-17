@@ -23,7 +23,7 @@ def createCtrler_Cube(Input_name):
             (1,-1,-1),
             (-1,-1,-1),
         ]
-        cmds.curve(d=1, p=CubePathing, name = Input_name)
+        return cmds.curve(d=1, p=CubePathing, name = Input_name)
 
 def createCtrler_Sphere(Input_name):
     SpherePathing = []; VertexPos = (0,0,0); VertexAmount = 36 # X times 4
@@ -48,7 +48,7 @@ def createCtrler_Sphere(Input_name):
         VertexPos = (0, math.sin(recAngle), -math.cos(recAngle))
         SpherePathing.append(VertexPos)
     SpherePathing.append(SpherePathing[-36])
-    cmds.curve(d=1, p=SpherePathing, name = Input_name)
+    return cmds.curve(d=1, p=SpherePathing, name = Input_name)
 
 def createCtrler_Prism(Input_name):
     PrismPathing = [
@@ -66,7 +66,7 @@ def createCtrler_Prism(Input_name):
         (0,-math.sqrt(2),0),
         (1,0,1)
     ]
-    cmds.curve(d=1, p=PrismPathing, name = Input_name)
+    return cmds.curve(d=1, p=PrismPathing, name = Input_name)
 
 def createCtrler_Ring(Input_name):
     VertexAmount = 36
@@ -76,7 +76,7 @@ def createCtrler_Ring(Input_name):
         VertexPos = (math.cos(recAngle), 0, math.sin(recAngle))
         RingPathing.append(VertexPos)
     RingPathing.append(RingPathing[0])
-    cmds.curve(d=1, p=RingPathing, name = Input_name)
+    return cmds.curve(d=1, p=RingPathing, name = Input_name)
 
 def createCtrler_RotPike(Input_name):
     RotPikePathing = [
@@ -93,7 +93,7 @@ def createCtrler_RotPike(Input_name):
     ]
 
     RotPikePathing.append(RotPikePathing[0])
-    cmds.curve(d=1, p=RotPikePathing, name = Input_name)
+    return cmds.curve(d=1, p=RotPikePathing, name = Input_name)
 
 def createCtrler_Rot1Dir(Input_name):
     CtrlerRot1DirPathing = [
@@ -245,7 +245,7 @@ def createCtrler_Rot1Dir(Input_name):
     ]
 
     CtrlerRot1DirPathing.append(CtrlerRot1DirPathing[0])
-    cmds.curve(d=1, p=CtrlerRot1DirPathing, name = Input_name)
+    return cmds.curve(d=1, p=CtrlerRot1DirPathing, name = Input_name)
 
 def createCtrler_Tran1Dir(Input_name):
     CtrlerTran1DirPathing = [
@@ -262,7 +262,7 @@ def createCtrler_Tran1Dir(Input_name):
     (-1.7499999999999998, 1.25, 0.0)
     ]
     CtrlerTran1DirPathing.append(CtrlerTran1DirPathing[0])
-    cmds.curve(d=1, p=CtrlerTran1DirPathing, name = Input_name)
+    return cmds.curve(d=1, p=CtrlerTran1DirPathing, name = Input_name)
 
 def createCtrler_Gear(Input_name):
     CtrlerGearPathing = [
@@ -325,7 +325,7 @@ def createCtrler_Gear(Input_name):
     (-0.781920027748727, 1.471184125795316, 0.0)
     ]
     CtrlerGearPathing.append(CtrlerGearPathing[0])
-    cmds.curve(d=1, p=CtrlerGearPathing, name = Input_name)
+    return cmds.curve(d=1, p=CtrlerGearPathing, name = Input_name)
 
 def createCtrler_TransCube(Input_name):
     #BaseSize = 5
@@ -352,7 +352,7 @@ def createCtrler_TransCube(Input_name):
         (0,-5,0),
     ]
     RecCubePathing = [(x + 0, y + 5, z + 0) for x, y, z in CubePathing]
-    cmds.curve(d=1, p=RecCubePathing, name = Input_name)
+    return cmds.curve(d=1, p=RecCubePathing, name = Input_name)
 
 def createCtrler_4DirCirc(Input_name):
     #BaseSize = 5
@@ -427,4 +427,36 @@ def createCtrler_4DirCirc(Input_name):
         [5.08610119865407, 2.0749624241034326e-11, -1.5702199224681055]
     ]
 
-    cmds.curve(d=1, p=CubePathing, name = Input_name)
+    return cmds.curve(d=1, p=CubePathing, name = Input_name)
+
+def createCtrler_4DirTrans(Input_name):
+    CubePathing = [
+        [0.0, 0.0, 11.75082517065],
+[-5.2046755372, 0.0, 8.402265245350002],
+[-2.66762927394, 0.0, 8.61307436965],
+[-2.28454135999, 0.0, 2.0034080270500003],
+[-9.8217259631, 0.0, 2.339353532490001],
+[-9.58133451168, 0.0, 4.564193466610001],
+[-13.3997896353, 0.0, -9.99955673819386e-12],
+[-9.58133451168, 0.0, -4.564193466649999],
+[-9.8217259631, 0.0, -2.3393535325231993],
+[-2.28454135999, 0.0, -2.0034080270849994],
+[-2.66762927394, 0.0, -8.613074369669999],
+[-5.2046755372, 0.0, -8.402265245399999],
+[0.0, 0.0, -11.75082517065],
+[5.2046755372, 0.0, -8.402265245399999],
+[2.66762927394, 0.0, -8.613074369669999],
+[2.28454135999, 0.0, -2.0034080270849994],
+[9.8217259631, 0.0, -2.3393535325231993],
+[9.58133451168, 0.0, -4.564193466649999],
+[13.3997896353, 0.0, -9.99955673819386e-12],
+[9.58133451168, 0.0, 4.564193466610001],
+[9.8217259631, 0.0, 2.339353532490001],
+[2.28454135999, 0.0, 2.0034080270500003],
+[2.66762927394, 0.0, 8.61307436965],
+[5.2046755372, 0.0, 8.402265245350002],
+[0.0, 0.0, 11.75082517065]
+
+
+    ]
+    return cmds.curve(d=1, p=CubePathing, name = Input_name)
