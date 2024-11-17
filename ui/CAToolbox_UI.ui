@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>408</width>
-    <height>635</height>
+    <width>451</width>
+    <height>743</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
      <item>
       <widget class="QTabWidget" name="Tab_Grp">
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="Tab_General">
         <property name="minimumSize">
@@ -107,13 +107,13 @@
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::Box</enum>
+          <enum>QFrame::Shape::Box</enum>
          </property>
          <property name="text">
           <string>Display return value:</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
          </property>
         </widget>
         <widget class="QWidget" name="gridLayoutWidget_2">
@@ -205,7 +205,7 @@
             <item>
              <layout class="QGridLayout" name="gridLayout_2">
               <property name="sizeConstraint">
-               <enum>QLayout::SetMinAndMaxSize</enum>
+               <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
               </property>
               <property name="topMargin">
                <number>0</number>
@@ -301,16 +301,16 @@
           <item>
            <widget class="QLabel" name="QLInstruction">
             <property name="frameShape">
-             <enum>QFrame::Box</enum>
+             <enum>QFrame::Shape::Box</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
+             <enum>QFrame::Shadow::Raised</enum>
             </property>
             <property name="text">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How to use:&lt;/p&gt;&lt;p&gt;1. Select all nodes you want.&lt;/p&gt;&lt;p&gt;2. Input the string.&lt;/p&gt;&lt;p&gt;3. Hit Execute button.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
             </property>
             <property name="margin">
              <number>12</number>
@@ -328,37 +328,20 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>10</y>
-           <width>341</width>
-           <height>91</height>
+           <y>80</y>
+           <width>403</width>
+           <height>222</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
            <layout class="QGridLayout" name="gridLayout_4">
-            <item row="0" column="3">
-             <widget class="QPushButton" name="QPBCtrlerRing">
-              <property name="maximumSize">
-               <size>
-                <width>36</width>
-                <height>36</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>FK</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../images/CtrlerRing.jpg</normaloff>../images/CtrlerRing.jpg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>32</width>
-                <height>32</height>
-               </size>
-              </property>
-             </widget>
-            </item>
+            <property name="horizontalSpacing">
+             <number>6</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>10</number>
+            </property>
             <item row="0" column="2">
              <widget class="QPushButton" name="QPBCtrlerPrism">
               <property name="maximumSize">
@@ -372,7 +355,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerPrism.jpg</normaloff>../images/CtrlerPrism.jpg</iconset>
+                <normaloff>../Qt/images/CtrlerPrism.jpg</normaloff>../Qt/images/CtrlerPrism.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -396,7 +379,7 @@ axes</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerSphere.jpg</normaloff>../images/CtrlerSphere.jpg</iconset>
+                <normaloff>../Qt/images/CtrlerSphere.jpg</normaloff>../Qt/images/CtrlerSphere.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -406,34 +389,25 @@ axes</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="QPBCtrlerCube">
-              <property name="maximumSize">
-               <size>
-                <width>36</width>
-                <height>36</height>
-               </size>
-              </property>
+            <item row="1" column="4">
+             <widget class="QPushButton" name="QPBCtrler4DirCirc">
               <property name="toolTip">
-               <string>Used for controls that can only translate on at least 2 axes</string>
+               <string>4DirCirc</string>
               </property>
               <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../images/CtrlerCube.jpg</normaloff>../images/CtrlerCube.jpg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>32</width>
-                <height>32</height>
-               </size>
+               <string>4dirCirc</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="QPBCtrlerRot1Dir">
+            <item row="4" column="3">
+             <widget class="QPushButton" name="QPBCtrlerSpineIkInv1">
+              <property name="text">
+               <string>spineIkInv1</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="4">
+             <widget class="QPushButton" name="QPBCtrlerRotPike">
               <property name="maximumSize">
                <size>
                 <width>36</width>
@@ -441,58 +415,11 @@ axes</string>
                </size>
               </property>
               <property name="toolTip">
-               <string>Used for controls that rotate only in one direction</string>
+               <string>Used for controls that can only rotate on at least 2 axes</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerRot1Dir.jpg</normaloff>../images/CtrlerRot1Dir.jpg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>32</width>
-                <height>32</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="QPBCtrlerTran1Dir">
-              <property name="maximumSize">
-               <size>
-                <width>36</width>
-                <height>36</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Used for controls that translate only in one direction</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../images/CtrlerTran1Dir.jpg</normaloff>../images/CtrlerTran1Dir.jpg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>32</width>
-                <height>32</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="QPBCtrlerGear">
-              <property name="maximumSize">
-               <size>
-                <width>36</width>
-                <height>36</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Used for controls that hold settings attributes like IK/FK, visibility, or
-space switching</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../images/CtrlerGear.jpg</normaloff>../images/CtrlerGear.jpg</iconset>
+                <normaloff>../Qt/images/CtrlerRotPike.jpg</normaloff>../Qt/images/CtrlerRotPike.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -515,7 +442,7 @@ space switching</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerTransCube.jpg</normaloff>../images/CtrlerTransCube.jpg</iconset>
+                <normaloff>../Qt/images/CtrlerTransCube.jpg</normaloff>../Qt/images/CtrlerTransCube.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -525,8 +452,80 @@ space switching</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="4">
-             <widget class="QPushButton" name="QPBCtrlerRotPike">
+            <item row="3" column="3">
+             <widget class="QPushButton" name="QPBCtrlerFin04">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string>fin04</string>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>f04</string>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="4">
+             <widget class="QPushButton" name="QPBCtrlerSpineIkInv2">
+              <property name="text">
+               <string>spineIkInv2</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QPushButton" name="QPBCtrlerFin01">
+              <property name="toolTip">
+               <string>fin01</string>
+              </property>
+              <property name="text">
+               <string>f01</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QPushButton" name="QPBCtrlerM01">
+              <property name="toolTip">
+               <string>master01</string>
+              </property>
+              <property name="text">
+               <string>m01</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="4">
+             <widget class="QPushButton" name="QPBCtrlerFinMeta">
+              <property name="toolTip">
+               <string>finMeta</string>
+              </property>
+              <property name="text">
+               <string>fmeta</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="QPBCtrlerM03">
+              <property name="toolTip">
+               <string>master03</string>
+              </property>
+              <property name="text">
+               <string>m03</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="QPBCtrlerCube">
               <property name="maximumSize">
                <size>
                 <width>36</width>
@@ -534,11 +533,14 @@ space switching</string>
                </size>
               </property>
               <property name="toolTip">
-               <string>Used for controls that can only rotate on at least 2 axes</string>
+               <string>Used for controls that can only translate on at least 2 axes</string>
+              </property>
+              <property name="text">
+               <string/>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../images/CtrlerRotPike.jpg</normaloff>../images/CtrlerRotPike.jpg</iconset>
+                <normaloff>../Qt/images/CtrlerCube.jpg</normaloff>../Qt/images/CtrlerCube.jpg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -548,122 +550,177 @@ space switching</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="4">
-             <widget class="QPushButton" name="QPBCtrler4DirCirc">
+            <item row="2" column="3">
+             <widget class="QPushButton" name="QPBCtrlerBendyLimb">
+              <property name="toolTip">
+               <string>bendylimb</string>
+              </property>
               <property name="text">
-               <string/>
+               <string>bendylimb</string>
               </property>
              </widget>
             </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="horizontalLayoutWidget_2">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>100</y>
-           <width>342</width>
-           <height>81</height>
-          </rect>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_10">
-          <item>
-           <layout class="QGridLayout" name="gridLayout_7">
-            <item row="0" column="1">
-             <widget class="QPushButton" name="QPBColorYellow">
-              <property name="styleSheet">
-               <string notr="true">QPushButton {
-    background-color: rgb(255, 255, 0);
-}</string>
+            <item row="3" column="1">
+             <widget class="QPushButton" name="QPBCtrlerFin02">
+              <property name="toolTip">
+               <string>fin02</string>
               </property>
               <property name="text">
-               <string>Center</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="QPBColorBlue">
-              <property name="styleSheet">
-               <string notr="true">QPushButton {
-    background-color: rgb(44, 57, 231)
-}</string>
-              </property>
-              <property name="text">
-               <string>Left</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="QPBColorReturn">
-              <property name="styleSheet">
-               <string notr="true">QPushButton {
-    background-color: rgb(127, 127, 127);
-}</string>
-              </property>
-              <property name="text">
-               <string>ColorReturn</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="QPBColorRed">
-              <property name="styleSheet">
-               <string notr="true">QPushButton {
-    background-color: rgb(176, 43, 43)
-}</string>
-              </property>
-              <property name="text">
-               <string>Right</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="3">
-             <widget class="QPushButton" name="QPBColorPurple">
-              <property name="styleSheet">
-               <string notr="true">QPushButton {
-    background-color: rgb(168, 41, 108)
-}</string>
-              </property>
-              <property name="text">
-               <string>31</string>
+               <string>f02</string>
               </property>
              </widget>
             </item>
             <item row="1" column="2">
-             <widget class="QPushButton" name="QPBColorCyan">
-              <property name="styleSheet">
-               <string notr="true">QPushButton {
-    background-color: rgb(100, 220, 225)
-}</string>
+             <widget class="QPushButton" name="QPBCtrlerGear">
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Used for controls that hold settings attributes like IK/FK, visibility, or
+space switching</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../Qt/images/CtrlerGear.jpg</normaloff>../Qt/images/CtrlerGear.jpg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>32</width>
+                <height>32</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="QPushButton" name="QPBCtrlerFin03">
+              <property name="toolTip">
+               <string>fin03</string>
               </property>
               <property name="text">
-               <string>18</string>
+               <string>f03</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="QPBCtrlerRing">
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>FK</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../Qt/images/CtrlerRing.jpg</normaloff>../Qt/images/CtrlerRing.jpg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>32</width>
+                <height>32</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="QPBCtrlerM02">
+              <property name="toolTip">
+               <string>master02</string>
+              </property>
+              <property name="text">
+               <string>m02</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QPushButton" name="QPBCtrlerSpineIkTip">
+              <property name="toolTip">
+               <string>spineIkTip</string>
+              </property>
+              <property name="text">
+               <string>SpineIkTip</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="4">
+             <widget class="QPushButton" name="QPBCtrlerHandCtl">
+              <property name="toolTip">
+               <string>handctl</string>
+              </property>
+              <property name="text">
+               <string>handctl</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QPushButton" name="QPBColorSkin">
-              <property name="styleSheet">
-               <string notr="true">QPushButton {
-    background-color: rgb(228, 172, 121)
-}</string>
+             <widget class="QPushButton" name="QPBCtrlerTran1Dir">
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
               </property>
+              <property name="toolTip">
+               <string>Used for controls that translate only in one direction</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../Qt/images/CtrlerTran1Dir.jpg</normaloff>../Qt/images/CtrlerTran1Dir.jpg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>32</width>
+                <height>32</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="2">
+             <widget class="QPushButton" name="QPBCtrlerSpineIkRoot">
               <property name="text">
-               <string>21</string>
+               <string>spinkIkRoot</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QPushButton" name="QPBColorPink">
-              <property name="styleSheet">
-               <string notr="true">QPushButton {
-    background-color: rgb(255, 176, 176)
-}</string>
+             <widget class="QPushButton" name="QPBCtrlerRot1Dir">
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
               </property>
+              <property name="toolTip">
+               <string>Used for controls that rotate only in one direction</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../Qt/images/CtrlerRot1Dir.jpg</normaloff>../Qt/images/CtrlerRot1Dir.jpg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>32</width>
+                <height>32</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QPushButton" name="QPBCtrlerSpineFk">
               <property name="text">
-               <string>20</string>
+               <string>spineFk</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QPushButton" name="QPBCtrlerSpineIkMid">
+              <property name="text">
+               <string>spineIkMid</string>
               </property>
              </widget>
             </item>
@@ -675,7 +732,7 @@ space switching</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>240</y>
+           <y>420</y>
            <width>341</width>
            <height>36</height>
           </rect>
@@ -706,7 +763,7 @@ space switching</string>
             <item row="0" column="3">
              <spacer name="horizontalSpacer">
               <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+               <enum>Qt::Orientation::Horizontal</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -724,7 +781,7 @@ space switching</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>280</y>
+           <y>460</y>
            <width>372</width>
            <height>81</height>
           </rect>
@@ -788,7 +845,7 @@ space switching</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>360</y>
+           <y>540</y>
            <width>341</width>
            <height>61</height>
           </rect>
@@ -823,7 +880,7 @@ space switching</string>
             <item row="0" column="3">
              <spacer name="horizontalSpacer_2">
               <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+               <enum>Qt::Orientation::Horizontal</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -837,11 +894,317 @@ space switching</string>
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>340</y>
+           <width>340</width>
+           <height>79</height>
+          </rect>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="1">
+           <widget class="QPushButton" name="QPBColorYellow">
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    background-color: rgb(255, 255, 0);
+}</string>
+            </property>
+            <property name="text">
+             <string>Center</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="QPBColorBlue">
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    background-color: rgb(44, 57, 231)
+}</string>
+            </property>
+            <property name="text">
+             <string>Left</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="QPBColorReturn">
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    background-color: rgb(127, 127, 127);
+}</string>
+            </property>
+            <property name="text">
+             <string>ColorReturn</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QPushButton" name="QPBColorRed">
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    background-color: rgb(176, 43, 43)
+}</string>
+            </property>
+            <property name="text">
+             <string>Right</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QPushButton" name="QPBColorPurple">
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    background-color: rgb(168, 41, 108)
+}</string>
+            </property>
+            <property name="text">
+             <string>31</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="QPBColorCyan">
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    background-color: rgb(100, 220, 225)
+}</string>
+            </property>
+            <property name="text">
+             <string>18</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="QPBColorSkin">
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    background-color: rgb(228, 172, 121)
+}</string>
+            </property>
+            <property name="text">
+             <string>21</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="QPBColorPink">
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    background-color: rgb(255, 176, 176)
+}</string>
+            </property>
+            <property name="text">
+             <string>20</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QLineEdit" name="QLECtrlerSize">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>40</y>
+           <width>71</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>10</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="QLCtrlSize">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>71</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>CtrlerSize</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="QRBX">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>40</y>
+           <width>31</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>x</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="autoRepeat">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="QRBY">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>40</y>
+           <width>31</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>y</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="QRBZ">
+         <property name="geometry">
+          <rect>
+           <x>180</x>
+           <y>40</y>
+           <width>41</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>z</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="QLECtrlName">
+         <property name="geometry">
+          <rect>
+           <x>220</x>
+           <y>40</y>
+           <width>113</width>
+           <height>22</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="QLCtrlName">
+         <property name="geometry">
+          <rect>
+           <x>220</x>
+           <y>20</y>
+           <width>61</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>CtrlName</string>
+         </property>
+        </widget>
        </widget>
        <widget class="QWidget" name="Tab_Animation">
         <attribute name="title">
          <string>Animation</string>
         </attribute>
+        <widget class="QLabel" name="label">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>270</y>
+           <width>301</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>To do list:</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_2">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>290</y>
+           <width>361</width>
+           <height>51</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Select vtx to generate a locator to pin on, and gen a motion trail (Done</string>
+         </property>
+        </widget>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>361</width>
+           <height>101</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Ani keys</string>
+         </property>
+         <widget class="QPushButton" name="QPBslAllCtrlWithKeys">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>111</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>sl all ctrl with keys</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>361</width>
+           <height>80</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Motion Trail</string>
+         </property>
+         <widget class="QPushButton" name="QPBrivet">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>71</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Rivet</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="QCBrivetMoTrail">
+          <property name="geometry">
+           <rect>
+            <x>90</x>
+            <y>30</y>
+            <width>76</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>MoTrail</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="QPBscreenSpaceMoTrail">
+          <property name="geometry">
+           <rect>
+            <x>200</x>
+            <y>20</y>
+            <width>75</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>ScreenSpace</string>
+          </property>
+         </widget>
+        </widget>
        </widget>
       </widget>
      </item>
